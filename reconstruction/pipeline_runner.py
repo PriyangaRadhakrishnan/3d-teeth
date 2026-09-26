@@ -64,8 +64,9 @@ def run_end_to_end_pipeline(
         print(f"[{sample_id}] {msg}")
         status_log.append(msg)
 
-    log(f"Stage 1: Image Segmentation (SAM / Otsu Outlier Removal & Augmentation)...")
-    from preprocessing.segmentation import apply_otsu_segmentation, augment_dental_data
+    log(f"Stage 1: Image Segmentation (SAM Neural Dental Segmentation & Augmentation)...")
+    from preprocessing.segmentation import apply_sam_segmentation, apply_otsu_segmentation, augment_dental_data
+    from preprocessing.sam_segmentation import segment_dental_sample
     norm_params = normalize_mesh(raw_obj, sample_dir)
     norm_obj_path = sample_dir / "mesh_normalized.obj"
     transform_path = sample_dir / "mesh_transform.json"
@@ -81,6 +82,11 @@ def run_end_to_end_pipeline(
     )
     manifest_path = sample_dir / "metadata.json"
     manifest_path.write_text(json.dumps(render_manifest, indent=2), encoding="utf-8")
+
+    # Run SAM segmentation on rendered 5 views
+    if (sample_dir / "images").exists() and list((sample_dir / "images").glob("*.png")):
+        log("Executing SAM segmentation on intraoral view images...")
+        segment_dental_sample(sample_dir)
 
     log("Stage 4: ControlNet++ Initial 3D Geometric Representation...")
     from reconstruction.priors import ControlNetPlusPlusPrior

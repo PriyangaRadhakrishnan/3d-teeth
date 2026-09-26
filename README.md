@@ -28,6 +28,36 @@ python scripts/validate_sample.py data/processed/<sample>
 
 The output sample contains `images/*.png`, metric camera-Z `depth/*.exr`, camera-space encoded `normals/*.png`, binary `masks/*.png`, `cameras/cameras.json`, `mesh_transform.json`, `inspection.json`, and report contact sheets. `mesh_transform.json` records the normalized working-copy transform needed to return a reconstruction to source coordinates.
 
+## Phase 1 — SAM-Based Segmentation
+
+Phase 1 upgrades the dental foreground segmentation from the earlier heuristic Otsu thresholding in `preprocessing/segmentation.py` to a production-grade **Segment Anything Model (SAM)** implementation (`preprocessing/sam_segmentation.py`).
+
+### Key Invariants Preserved
+- Downstream compatibility is strictly maintained: binary single-channel 8-bit PNGs (`uint8`, with values strictly in `{0, 255}`) saved to `data/processed/<sample_id>/masks/<view>.png`.
+- ControlNet++, Cross-view Feature Fusion, 3D Gaussian neural fields, multiscale Gaussian rendering, NSDF, normal/curvature refinement, and ICP remain completely intact and untouched for future phases.
+
+### Download SAM Weights
+SAM requires official model weights. Checkpoints are stored locally in `checkpoints/` and are excluded from git tracking.
+To download the default ViT-B model checkpoint (~375 MB):
+```powershell
+python scripts/download_sam_checkpoint.py --model-type vit_b
+```
+
+### Running SAM Segmentation
+To run SAM segmentation across all five views of a processed sample:
+```powershell
+python scripts/run_sam_segmentation.py data/processed/<sample_id>
+```
+Options:
+- `--checkpoint`: Path to the `.pth` weights file (default: `checkpoints/sam_vit_b_01ec64.pth`).
+- `--model-type`: Architecture type (`vit_b`, `vit_l`, or `vit_h`, default: `vit_b`).
+- `--device`: Target compute device (`cuda` or `cpu`, default: auto-detect).
+
+### Visual Validation Outputs
+Visual inspection artifacts are automatically generated for clinical verification:
+- Per-view overlay images: `data/processed/<sample_id>/reports/sam_segmentation_visualizations/<view>_sam_overlay.png` (semi-transparent cyan mask with white boundary contour overlaid on the original intraoral photo).
+- Summary contact sheet: `data/processed/<sample_id>/reports/sam_segmentation_contact_sheet.png` (side-by-side comparison of all five views with segmented crown area metrics and SAM IoU confidence scores).
+
 ## Reconstruction baseline
 
 The current controlled baseline fuses masked depth pixels from all five calibrated views into a 3D PLY:
