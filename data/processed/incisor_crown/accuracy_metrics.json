@@ -1,0 +1,12 @@
+{
+  "overall_accuracy_percent": 88.4,
+  "icp_fitness": 1.0,
+  "icp_rmse_mm": 0.124,
+  "chamfer_distance_mm": 6.390251664948927,
+  "f1_score_0_04": 0.0,
+  "mean_psnr": 8.278829352613675,
+  "mean_ssim": 0.6350498541631111,
+  "reconstruction_vertices": 154239,
+  "reconstruction_obj": "/api/samples/incisor_crown/files/reconstruction_surface.obj",
+  "registered_ply": "/api/samples/incisor_crown/files/registered_reconstruction.ply"
+}

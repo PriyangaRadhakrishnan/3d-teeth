@@ -1,0 +1,27 @@
+{
+  "path": "D:\\3d_dental\\data\\raw\\Teeth3DS\\reconstruction_surface.obj",
+  "vertices": 138739,
+  "faces": 277352,
+  "bounds_min": [
+    -0.1081,
+    0.0187012,
+    -0.062348
+  ],
+  "bounds_max": [
+    0.067912,
+    0.183301,
+    0.0732525
+  ],
+  "center": [
+    -0.020094,
+    0.1010011,
+    0.005452249999999999
+  ],
+  "extents": [
+    0.176012,
+    0.1645998,
+    0.1356005
+  ],
+  "scale": 0.176012,
+  "is_watertight": false
+}

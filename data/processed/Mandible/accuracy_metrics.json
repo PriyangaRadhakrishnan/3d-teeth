@@ -1,0 +1,12 @@
+{
+  "overall_accuracy_percent": 88.4,
+  "icp_fitness": 1.0,
+  "icp_rmse_mm": 0.23263166501892601,
+  "chamfer_distance_mm": 0.434085707125059,
+  "f1_score_0_04": 0.6284978604272449,
+  "mean_psnr": 8.287040593178423,
+  "mean_ssim": 0.1675911959744165,
+  "reconstruction_vertices": 512000,
+  "reconstruction_obj": "/api/samples/Mandible/files/reconstruction_surface.obj",
+  "registered_ply": "/api/samples/Mandible/files/registered_reconstruction.ply"
+}

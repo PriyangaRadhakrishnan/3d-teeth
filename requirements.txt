@@ -1,0 +1,9 @@
+numpy>=1.24,<3
+trimesh>=4.0
+Pillow>=10.0
+scipy>=1.11
+packaging>=23
+fastapi>=0.111
+uvicorn>=0.30
+python-multipart>=0.0.9
+# Blender 4.x is installed separately and is not a pip dependency.

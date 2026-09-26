@@ -1,0 +1,35 @@
+{
+  "fitness": 1.0,
+  "inlier_rmse": 0.1844558436961642,
+  "correspondences": 512000,
+  "iterations": 30,
+  "transformation": [
+    [
+      0.7820635522128608,
+      0.5809655284827308,
+      -0.225511984193717,
+      0.11856727037927732
+    ],
+    [
+      -0.61982112732942,
+      0.7627363705318458,
+      -0.1845399663595884,
+      -0.2873411968101054
+    ],
+    [
+      0.06479483325306602,
+      0.2840990738856667,
+      0.9566030241437757,
+      -0.10332215541576635
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "reconstruction": "D:\\3d_dental\\data\\processed\\custom_patient_arch\\reconstruction.ply",
+  "original_obj": "D:\\3d_dental\\data\\processed\\custom_patient_arch\\mesh_normalized.obj",
+  "output": "D:\\3d_dental\\data\\processed\\custom_patient_arch\\registered_reconstruction.ply"
+}

@@ -1,0 +1,35 @@
+{
+  "fitness": 1.0,
+  "inlier_rmse": 0.4096868488567781,
+  "correspondences": 161867,
+  "iterations": 30,
+  "transformation": [
+    [
+      0.9999992553322699,
+      0.0006291431942390218,
+      0.001045712075573295,
+      -5.6850885825432943e-05
+    ],
+    [
+      -0.0006698096356797831,
+      0.9992250871762582,
+      0.03935449799766828,
+      -0.5064163884177559
+    ],
+    [
+      -0.0010201421252980796,
+      -0.039355169119668465,
+      0.9992247644917557,
+      -0.435303783787645
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "reconstruction": "D:\\3d_dental\\data\\processed\\premolar_crown\\reconstruction.ply",
+  "original_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\premolar_crown.obj",
+  "output": "D:\\3d_dental\\data\\processed\\premolar_crown\\registered_reconstruction.ply"
+}

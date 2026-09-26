@@ -1,0 +1,6 @@
+.venv/
+.venv-gaussian/
+.torch_extensions/
+__pycache__/
+*.py[cod]
+*.log

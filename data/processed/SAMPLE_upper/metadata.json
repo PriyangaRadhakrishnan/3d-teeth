@@ -1,0 +1,54 @@
+{
+  "sample_id": "SAMPLE_upper",
+  "views": [
+    "top",
+    "front",
+    "back",
+    "left",
+    "right"
+  ],
+  "resolution": [
+    640,
+    640
+  ],
+  "camera_file": "cameras/cameras.json",
+  "image_files": [
+    "images/top.png",
+    "images/front.png",
+    "images/back.png",
+    "images/left.png",
+    "images/right.png"
+  ],
+  "depth_files": [
+    "depth/top.exr",
+    "depth/front.exr",
+    "depth/back.exr",
+    "depth/left.exr",
+    "depth/right.exr"
+  ],
+  "depth_visualization_files": [
+    "depth_vis/top.png",
+    "depth_vis/front.png",
+    "depth_vis/back.png",
+    "depth_vis/left.png",
+    "depth_vis/right.png"
+  ],
+  "normal_files": [
+    "normals/top.png",
+    "normals/front.png",
+    "normals/back.png",
+    "normals/left.png",
+    "normals/right.png"
+  ],
+  "mask_files": [
+    "masks/top.png",
+    "masks/front.png",
+    "masks/back.png",
+    "masks/left.png",
+    "masks/right.png"
+  ],
+  "normal_encoding": "RGB = camera-space XYZ * 0.5 + 0.5",
+  "depth_encoding": "metric camera Z depth in EXR",
+  "source_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\SAMPLE_upper.obj",
+  "jaw": null
+}

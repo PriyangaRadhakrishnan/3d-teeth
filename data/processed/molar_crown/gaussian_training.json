@@ -1,0 +1,9 @@
+{
+  "mode": "neural-field-gaussian-color-optimization",
+  "device": "cuda",
+  "iterations": 300,
+  "points": 35000,
+  "initial_loss": 0.2311278134584427,
+  "final_loss": 0.00038463366217911243,
+  "output": "D:\\3d_dental\\data\\processed\\molar_crown\\gaussian_model.pt"
+}

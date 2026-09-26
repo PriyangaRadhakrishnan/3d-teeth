@@ -1,0 +1,35 @@
+{
+  "fitness": 1.0,
+  "inlier_rmse": 0.23263166501892601,
+  "correspondences": 512000,
+  "iterations": 30,
+  "transformation": [
+    [
+      0.7723603601195612,
+      -0.6331228102997364,
+      -0.05113688682493233,
+      0.15578957507200064
+    ],
+    [
+      0.5224425527599217,
+      0.5874191915140796,
+      0.6180553959853813,
+      -0.42482856337766367
+    ],
+    [
+      -0.36126618051193304,
+      -0.5040775739101208,
+      0.7844695955224843,
+      0.22897745641189007
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "reconstruction": "D:\\3d_dental\\data\\processed\\Mandible\\reconstruction.ply",
+  "original_obj": "D:\\3d_dental\\data\\processed\\Mandible\\mesh_normalized.obj",
+  "output": "D:\\3d_dental\\data\\processed\\Mandible\\registered_reconstruction.ply"
+}

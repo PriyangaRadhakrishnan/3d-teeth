@@ -1,0 +1,830 @@
+=== Page 1 ===
+Scientiﬁc Research Report
+A High-Fidelity Framework for 3D Dental Crown
+Reconstruction Using Intraoral Images
+Ni Liao a,y, Xinyu Zhang a,y, Wenkang Chen b, Xuejun Zhang b, Shuixue Mo a*
+a Department of Orthodontics, College & Hospital of Stomatology, Guangxi Medical University, Nanning, Guangxi,
+530021, China
+b School of Electrical Engineering, Guangxi University, Nanning, Guangxi, 530004, China
+ARTICLE INFO
+Article history:
+Received 1 November 2025
+Received in revised form
+7 December 2025
+Accepted 21 December 2025
+Available online 27 January 2026
+ABSTRACT
+Introduction and aims: This study aimed to develop a novel framework, DenGaussDiff, which
+employed three-dimensional (3D) Gaussian neural ﬁelds and diffusion priors for precise
+dental crown reconstruction from 5 intraoral images.
+Methods: This study collected 1000 clinical cases with 5 intraoral images and paired intrao-
+ral scanning (IOS) models and a public dataset was employed. First, images were seg-
+mented and enhanced to improve input quality. Next, 3D basic representation of the
+crowns was constructed using integrated camera pose estimation and an optimised Con-
+trolNet++ model. Then, a learnable neural representation was introduced and multiscale
+Gaussian rendering was applied to optimise the 3D crown representation. Finally, the Itera-
+tive Closest Point (ICP) algorithm was used for registration with IOS models.
+Results: On our dental crown dataset, DenGaussDiff outperformed other reconstruction
+methods, with a 1.33% increase in Peak Signal-to-Noise Ratio (PSNR), a 3.9% increase in
+Structural Similarity Index (SSIM) and a 4.3% reduction in Learned Perceptual Image Patch
+Similarity (LPIPS). The point cloud registration results demonstrated a high-precision
+match between the reconstructed 3D crown model and IOS model. On the public dataset,
+DenGaussDiff achieved excellent performance among various evaluation indicators in
+dental plaque, tooth absence and tooth decay. Each key component of our framework was
+shown to be critical for precise reconstruction in ablation study.
+Conclusion: The DenGaussDiff framework provides precise 3D dental crown reconstruc-
+tions from sparse intraoral images, suggest ing its potential in orthodontic diagnosis
+and monitoring. This fu rther facilitates the clinical implementation of digital den-
+tistry.
+/C2112025 The Authors. Published by Elsevier Inc. on behalf of FDI World Dental Federa-
+t i o n .T h i si sa no p e na c c e s sa r t i c l eu n d e rt h eC CB Y - N C - N Dl i c e n s e
+(http://creativecommons.org/licenses/by-nc-nd/4.0/ )
+Key words:
+Neural representations
+Sparse-view 3D reconstruction
+Intraoral image-based generation
+Digital orthodontics
+Introduction
+With advances in artiﬁcial intelligence (AI) and its auto-
+matic deep learning processes , AI in dentistry is undergoing
+a signiﬁcant revolution, enabling many applications such
+as diagnostics, treatment planning, patient education and
+imaging analysis. 1 Orthodontics, as a discipline which
+relies heavily on accurate images and models, particularly
+beneﬁts from this revolution. Currently, AI has shown great
+p o t e n t i a lt oh e l po r t h o d o n tists diagnose accurately and
+monitor treatment progress effectively. 2 For example, an AI
+system was designed for dental occlusion classiﬁcation
+using intraoral images. 3 Furthermore, other studies on AI
+applications have developed a fully automated deep learn-
+ing model for tooth segmentation 4 and a 3D dental model
+dataset was designed to enable automatic tooth
+alignment. 5
+Orthodontic treatment is a process that requires regular
+monitoring and adjustments over an extended period. 6 For
+many years, intraoral photography has played a vital role in
+maintaining records and tracking treatment progress. 7,8 How-
+ever, these images are unable to reﬂect the 3D spatial rela-
+tionships among the teeth. Consequently, 3D dental crown
+models have become widely adopted by orthodontists for
+* Corresponding author. Department of Orthodontics, College &
+Hospital of Stomatology, Guangxi Medical University, Nanning,
+No. 22, Shuangyong Road, Guangxi, 530021, China.
+E-mail address: mosx0226@outlook.com (S. Mo).
+y Ni Liao and Xinyu Zhang contributed equally to this work.
+https://doi.org/10.1016/j.identj.2025.109379
+0020-6539//C2112025 The Authors. Published by Elsevier Inc. on behalf of FDI World Dental Federation. This is an open access article under
+the CC BY-NC-ND license ( http://creativecommons.org/licenses/by-nc-nd/4.0/)
+i n t e r n a t i o n a l d e n t a l j o u r n a l 76 (2026) 109379
+=== Page 2 ===
+their clear visualization of dental structures. Currently,
+intraoral scanners are the primary technology for obtaining
+high-precision 3D digital dental crown models. 9 Despite their
+effectiveness, factors such as high cost and the need for fre-
+quent in-person visits limit their widespread application.
+This limitation has driven AI-aided research toward auto-
+matic 3D dental crown model reconstruction from easily
+accessible 2D intraoral image data. Such research not only
+enhances doctor-patient communication but also enables
+precise monitoring of tooth movement, facilitating remote
+consultations and thereby improving the efﬁciency and ﬂexi-
+bility of diagnosis and treatment.
+In clinical photography during orthodontic treatment, at
+least 5 intraoral images were required according to the stand-
+ardised guidelines: a frontal view, 2 lateral views and 2 occlu-
+sal views. 10 These images are insufﬁcient for dense input
+requirements, necessitating sparse-view 3D reconstruction.
+However, existing 3D reconstruction methods often struggle
+with insufﬁcient accuracy when dealing with sparse view
+inputs.11 Some methods require dense image inputs and
+complex device conﬁgurations, which are impractical in real-
+world orthodontic treatment scenarios. 12 While deep learn-
+ing-based methods have made signiﬁcant progress, there
+remains room for improvement in model generalisation and
+detail reconstruction.
+In previous studies, researchers have proposed some
+methods to face the challenge with few images for 3D den-
+tal reconstruction. For instance, Chen et al. 13 proposed a
+method for reconstructing 3D dental structures from 5
+intraoral photographs using parameterised tooth models.
+However, the reconstruction quality largely depends on
+predeﬁned tooth templates, making it difﬁcult when facing
+complex clinical dental conditions. Liang et al. 14 proposed
+a deep neural network framework to restore 3D teeth from
+a single panoramic X-ray. Song et al. 15 reconstructed the
+3D information of the entire oral cavity based on a single
+panoramic X-ray image and prior dental arch information.
+However, these methods still require patients to attend fre-
+quent follow-ups and expose patients to radiation. In sum-
+mary, they are not suitable for remote monitoring in
+orthodontic treatment.
+To address these challenges , we propose the DenGauss-
+Diff framework, a complete process for reconstructing den-
+tal crowns from 5 intraoral images based on a 3D Gaussian
+neural ﬁeld. First, intraoral images were collected and pre-
+processed as input data by the SAM model 16 and the Otsu
+algorithm. 17 Second, a 3D basic representation of dental
+crowns was reconstructed using a ControlNet++ model 18
+combined with camera pose estimation. Third, learnable
+neural representations were introduced to distill geometric
+details of diverse dental crowns and a multiscale Gaussian
+rendering strategy was integrated to achieve high-precision
+dental crown model. Finally, reconstructed crowns were
+registered with the paired IOS models to ensure their ﬁdel-
+ity through the optimised ICP algorithm. 19,20 This frame-
+work enables precise reconstruction of 3D dental crown
+models, which makes it possible for orthodontic diagnosis
+and treatment and remote dental monitoring, effectively
+advancing the practical application of digital orthodontic
+diagnosis and treatment ( Figure 1 ).
+Materials and methods
+Source of data
+The inclusion criteria were as follows: (1) male or female
+patients aged 10-40 years; (2) complete permanent denti-
+tion excluding third molars; (3) in good general health
+without systemic diseases affecting tooth development; (4)
+availability of high-quality intraoral images and paired IOS
+digital dental models. The exclusion criteria were as fol-
+lows: (1) patients undergoing ﬁxed orthodontic treatment;
+(2) severe enamel hypoplasia; (3) severe active periodontal
+disease; (4) multiple defective dental restorations in the
+oral cavity.
+This study collected 1000 cases from the Orthodontics
+Department of the Afﬁliated Stomatological Hospital of
+Guangxi Medical University. Children and adolescents aged
+10 to 18 accounted for about 70%, adults aged 19 to 35
+accounted for about 20% and adults over 35 accounted for
+about 10%. The male-to-female ratio was 1: 2.18. Tooth
+morphology distribution was di stributed as follows: inci-
+sors 28.3%, canines 14.2%, premolars 28.6% and molars
+28.9%. The severity of dental crowding was approximately
+40.2% mild, 11.6% moderate and 3.7% severe. Among all
+included patients, the distribution of Angle’s classiﬁcations
+w a sa sf o l l o w s :C l a s sI(n = 493), Class II ( n =4 0 2 )a n dC l a s s
+III ( n = 105). In addition, a total of 2.9% of patients had
+existing restorations.
+Each case included 5 intraoral images and a paired IOS 3D
+model ( Figure 2 ). All images were collected by nurses with
+standardised training using high-deﬁnition Nikon D7200
+DSLR cameras with a macro lens. The aperture was set to f/
+18-22 with a shutter speed of 1/125 s and ISO of 200 to 250 and
+an auxiliary ﬁll light was used as needed. For the frontal and
+lateral views, the occlusal plane was located in the middle of
+the bite images and the camera lens was perpendicular to the
+tooth surface. While in the maxillary and mandibular views,
+dental midline was kept cantered. The paired IOS models
+were obtained by iTero intelligent oral scanner. We used
+Cloudcompare software to manually extract the crown area
+of the scanned 3D model of the oral cavity as the basis for
+subsequent experiments. The 1000 cases were randomly
+divided into 3 subsets without considering age in the alloca-
+tion. For model training, 800 cases were allocated for training,
+100 for validation and 100 for testing.
+This study employed another public oral disease dataset
+consisting of dental condition images collected from multi-
+ple hospitals and well-known dental websites. 21 This data-
+set includes 8188 2D natural images covering various dental
+conditions such as gingivitis, tooth discolouration and
+edentulism, which have been enhanced with data augmen-
+tation techniques such as rotation, ﬂipping, scaling and
+noise addition. Unlike the dental crown dataset, the images
+in the Oral Diseases dataset lack sufﬁcient images taken
+from multiple angles for 1 patient. Therefore, after careful
+screening, we selected 3 images that can describe the same
+patient’s dental crown from 3 common dental diseases
+(dental plaque, tooth absence and tooth decay) as input. In
+this study, the image size of the dataset was adjusted to
+640 £ 640 pixels.
+2 liao et al.
+=== Page 3 ===
+Preprocessing of the intraoral images
+To optimise the input data quality, we preprocessed the
+intraoral images, retaining only the dental crown area in the
+image as the input image for model validation and compari-
+son of 3D reconstruction effects. The Segment Anything
+Model (SAM) 16 was employed to segment the dental crown
+area in the images inside the exit and obtain its mask image
+and the Otsu algorithm 17 was employed to remove outliers
+and noise. In addition, the Augmentor and Imgaug image
+libraries were used to amplify dental crown image data. 22
+Considering interference factors present in clinical intraoral
+images, the enhancement techniques included brightness
+adjustment, adding noise and cropping.
+3D basic representation of dental crowns
+At ﬁrst, a diffusion prior was introduced through ControlNet+
++, an image generation network built upon the stable diffu-
+sion model.18 Starting from the ofﬁcial open-source packages,
+Fig. 2 – A schematic diagram of dental crown data for each patient, including 5 intraoral images and the paired IOS models.
+Fig. 1 – The framework of DenGaussDiff. This framework provides precise 3D dental crown reconstructions from sparse
+intraoral images using 3D Gaussian neural ﬁelds and diffusion priors.
+ai-based 3d dental crown reconstruction 3
+=== Page 4 ===
+we take the preprocessed dental crown image as the control
+input and adapt the conditional ControlNet++ input to predict
+RGB images, normal maps and depth maps separately in a
+single forward pass. These multimodal outputs are then used
+as geometric prior information for 3D Gaussian representa-
+tion of the basic dental crown. Then, the idea of the RelPose+
++ model 23 was adopted to calculate the camera pose of n
+images input into the network, Y ={ I1, ..., In}, Ii 2 RH £ W £ 3.
+This is because in clinical photography, the number of available
+views of each patient is limited, leading to insufﬁcient match-
+ing features for reconstruction. In addition, the 3D Gaussian
+representation incorporated optimisable texture parameters,
+enabling precise texture and illumination decoupling of the
+dental crown. The combination of these approaches facilitates
+the basic representation of dental crowns.
+Optimisation of 3D dental crowns
+To optimise the representation of dental crowns, a learnable
+neural representation module was proposed, which exploits
+neural ﬁelds to capture accurate colour and texture informa-
+tion of the crown. In the architecture of learnable neural
+representation, geometric structure and appearance are ﬁrst
+encoded by a compact neural ﬁeld rather than directly by the
+sparse 3D Gaussians. A neural rendering network with multi-
+resolution hash encoding is used to represent the dental
+crown surface as a continuous implicit function in 3D space.
+On top of this implicit geometry, 1 branch predicts a view-
+independent diffuse colour and a weight controlling the
+strength of specular effects, while another branch takes the
+viewing direction as input and produces view-dependent
+specular lighting. The network is optimised with an image
+reconstruction loss together with an additional regularisation
+term on the implicit surface function and the optimised nor-
+mal and depth values are then used to guide the densiﬁcation
+and reﬁnement of the 3D Gaussian distribution.
+By means of this module, initial normal maps and depth
+maps were distilled, while the geometric information was
+reﬁned due to diversiﬁed 3D Gaussian elements. A dense grid
+system was established based on the learnable neural represen-
+tation, which can accurately query volume data of various reso-
+lutions and effectively capture detailed surface geometry even in
+sparsely sampled areas. We identiﬁed the key surface transition
+areas of the grid by setting a dens ity threshold and interpolate
+the surface intersections, which provides dense reconstruction
+and geometric perception of basic 3D Gaussian representations.
+Then a multiscale Gaussian rendering strategy was intro-
+duced. For each Gaussian element, we ﬁrst evaluate its contri-
+bution in all input views by accumulating the opacity inside
+its 2D projection footprint and choose the view with the high-
+est contribution as a reference. From this reference view,
+depth and surface normal for the Gaussian are estimated
+from the neural ﬁeld and then checked against the geometry
+predicted at other views, so that inconsistent or unreliable
+estimates can be suppressed. We further compute a relative
+difference between these reﬁned values and the initialisation,
+which allows us to separate slowly varying areas from sharp
+and high-frequency regions. Regions with small differences
+are directly back to update the 3D crown reconstruction,
+whereas regions with large differences are re-rendered for
+additional reﬁnement. This multiscale ﬁltering and update
+process alleviates aliasing caused by small Gaussian ele-
+ments and improves both geometric ﬁdelity and visual qual-
+ity of the reconstructed dental crowns. By selecting the view
+with the highest contribution, calculating the ﬁltered depth
+and normal values and controlling high-frequency regions,
+the strategy improved accuracy and quality in dental crown
+3D reconstruction (Figure 3).
+Registration between reconstructed crowns and IOS models
+We validated the reconstructed crowns by registering them
+with the paired IOS models. ICP and optimised ICP algorithm
+were used to compare the homologous points between the 2
+models.19,20 The IOS models were marked with green point
+clouds, while reconstructed crowns were marked with red
+point clouds. During the registration of the green and red
+point clouds, each noncoinciding point was computed as the
+Fig. 3 – Flowchart of 3D dental crown optimisation.
+4 liao et al.
+=== Page 5 ===
+registration error and expressed in mm. Lower registration
+error indicates greater spatial similarity with the IOS models.
+Evaluation metrics and statistical analysis
+In all experiments, the model was optimised for 10,000 itera-
+tions with a batch size of 2. The learning rate was scheduled to
+linearly grow from e-5 at the start of training to 5e -4 at the end.
+To quantitatively verify the advantages of this framework, we
+used 3 widely used indicators to evaluate, namely, PSNR, SSIM
+and LPIPS.24 To evaluate the accuracy of the reconstructed 3D
+model of dental crowns, we calculated chamfer distance (CD),
+the F1 score and the Intersection over Union index (IoU) under
+different thresholds according to the reference mesh.25 All sta-
+tistical analyses were performed using GraphPad Prism soft-
+ware. Paired t-tests were used to compare the registration
+error of DenGaussDiff and other methods within the same
+patient, P <.05 was considered signiﬁcant.
+Results
+Qualitative and quantitative results
+For sparse view input, we selected existing advanced meth-
+ods in the ﬁeld of computer vision, including FSGS (Zhu et
+al.),26 SAP3D (Han et al.), 27 MVSplat360 (Chen et al.), 28 and
+TeethDreamer (Xu et al.), 29 to compare with DenGaussDiff.
+The visualisation results of various advanced sparse view 3D
+reconstruction methods on the dental crown dataset were
+shown in Figure 3 and their quantitative indicators were
+shown in Table 1 . The DenGaussDiff framework proposed in
+this article was more in line with the real dental crowns in
+the reconstruction results and can construct dental crown
+meshes containing ﬁne textures ( Figure 4 ). Among various
+evaluation indicators, the DenGaussDiff framework has
+shown excellent performance. In the reconstruction of maxil-
+lary dental crowns, PSNR achieved 18.58, SSIM achieved
+0.827, LPIPS achieved 0.153, CD achieved 0.208, F1 score
+achieved the highest value of 0.807 and IOU achieved 0.405. In
+the reconstruction of the mandibular dental crown, PSNR
+achieved 16.57, SSIM achieved 0.747, LPIPS achieved 0.203, CD
+achieved 0.244 and the F1 score achieved the highest value of
+0.787, while IOU achieved 0.359 ( Table 1).
+Registration between reconstructed crowns and IOS models
+To explore the potential for clinical application of DenGauss-
+Diff, we compared its reconstructed crowns with the clinical
+gold standard, IOS models, by 3D point cloud registration.
+Results showed high spatial consistency between recon-
+structed crowns and IOS models in both the maxillary and
+mandibular regions ( Figures 5A and B). Visual comparisons at
+each tooth site provided further insights ( Figures 5 C and D).
+For the same tooth in the same patient, paired t-tests showed
+that the registration errors of DenGaussDiff with the IOS
+model were signiﬁcantly lower than those of other methods
+(Figures 5E and F). Table 2 further reported the associated sta-
+tistical metrics, with low P-values and large Cohen’s d sup-
+porting this difference.
+Evaluation of DenGaussDiff on the public dataset
+The visualisation results of various advanced sparse view 3D
+reconstruction methods on the Oral Diseases dataset were
+Table 1 – Quantitative comparison of the DenGaussDiff framework with other methods on the dental crown dataset.
+Region Method PSNR " SSIM" LPIPS# CD(mm)# F1@0.04" IoU"
+Maxillary SAP3D 16.75 0.748 0.278 0.441 0.572 0.142
+FSGS 16.89 0.742 0.205 0.325 0.615 0.251
+MVSplat360 17.07 0.783 0.147 0.295 0.738 0.341
+TeethDreamer 17.25 0.804 0.176 0.242 0.772 0.376
+DenGaussDiff 18.58 0.827 0.153 0.208 0.807 0.405
+Mandibular SAP3D 14.28 0.518 0.411 0.445 0.575 0.192
+FSGS 14.97 0.589 0.348 0.381 0.617 0.241
+MVSplat360 15.45 0.642 0.304 0.345 0.688 0.287
+TeethDreamer 16.15 0.708 0.246 0.294 0.725 0.324
+DenGaussDiff 16.57 0.747 0.203 0.244 0.787 0.359
+Fig. 4 – Qualitative comparison of the DenGaussDiff framework with other methods on the dental crown dataset.
+ai-based 3d dental crown reconstruction 5
+=== Page 6 ===
+shown in Figure 6 and their quantitative indicators were
+shown in Table 2 . In the visualisation results, the Den-
+GaussDiff framework proposed in this article was closer to
+the real clinical conditions, indicating better morphological
+and detail ﬁdelity. It can render the colour of dental plaque
+and the situation of tooth decay ( Figure 6 ). Quantitative
+comparison showed that in the presence of dental plaque,
+tooth absence and tooth decay, DenGaussDiff still achieved
+Fig. 5 – 3D Registration between reconstructed crowns and IOS Models. (A) Point cloud registration of maxillary models
+between DenGaussDiff and IOS. (B) Point cloud registration of mandibular models between DenGaussDiff and IOS. (C) Visual-
+isation of registration accuracy for maxillary teeth. (D) Visualisation of registration accuracy for mandibular teeth. (E) Maxil-
+lary mean registration error of different methods. (F) Mandibular mean registration error of different methods. *** P <.001.
+Table 2 – Statistical analysis of registration error among different methods using paired-t tests.
+Paired-t test P-value 95% conﬁdence intervals Cohen’s d
+Maxillary SAP3D-DenGaussDiff <.001 0.577 to 0.604 7.27
+FSGS-DenGaussDiff <.001 0.549 to 0.585 5.34
+MVSplat360-DenGaussDiff <.001 0.413 to 0.442 4.90
+TeethDreamer-DenGaussDiff <.001 0.349 to 0.377 4.40
+Mandibular SAP3D-DenGaussDiff <.001 0.580 to 0.610 6.79
+FSGS-DenGaussDiff <.001 0.532 to 0.565 5.57
+MVSplat360-DenGaussDiff <.001 0.388 to 0.411 5.67
+TeethDreamer-DenGaussDiff <.001 0.312 to 0.332 5.36
+6 liao et al.
+=== Page 7 ===
+excellent performance across various evaluation indicators
+(Table 3 ).
+Ablation study
+Ablation studies were designed to validate the effectiveness
+of the key components of DenGaussDiff at each stage. Three
+models under the same conditions as the DenGaussDiff
+framework were trained to analyse the effectiveness of each
+component. In the 3D basic representation of dental crowns
+stage, we constructed a DenGaussDiff w/o A1 model that
+removed the computational camera pose and ControlNet+
++Stable Diffusion model from the DenGaussDiff framework.
+It can be intuitively seen that adding camera pose calculation
+and ControlNet++ stable diffusion model can signiﬁcantly
+improve the geometric accuracy and visual effect of 3D dental
+crown reconstruction, thereby providing more stable data
+support for downstream tasks of dental crown 3D reconstruc-
+tion ( Figure 7 ). The DenGaussDiff w/o A1 model was 1.13
+lower than the DenGaussDiff model in PSNR index, 0.059
+lower in SSIM index and 0.05 higher in LPIPS index ( Table 4).
+In the optimisation of 3D dental crowns phase, we con-
+structed a DenGaussDiff w/o A2 model, which removed the
+learnable neural representation of the Optimised 3D Gaussian
+representation of dental crowns stage and the Multi scale
+Gaussian Rendering Strategy. The DenGaussDiff w/o A2
+model and the DenGaussDiff model were compared while
+enlarging the details of the reconstructed dental crown 3D
+model. It can be intuitively seen that adding learnable neural
+representations and multiscale Gaussian rendering strategies
+can reﬁne the geometric accuracy and rendering effect of the
+Gaussian representation of dental crowns ( Figure 7). The Den-
+GaussDiff w/o A2 model was 1.26 lower than the DenGauss-
+Diff model in PSNR metrics, 0.101 lower in SSIM metrics and
+0.072 higher in LPIPS metrics ( Table 4).
+Finally, a DenGaussDiff w/o A3 model, completely deleting
+the above content, was constructed. It was 1.92 lower than
+the DenGaussDiff model in PSNR metrics, 0.127 lower in SSIM
+metrics and 0.148 higher in LPIPS metrics ( Table 4).
+Discussion
+Orthodontic diagnosis and treatment mainly rely on precise
+3D crown models to assess tooth alignment, occlusal rela-
+tionships and monitor progress. 30 While IOS offer high accu-
+racy, their clinical utility is limited by cost and patient access
+− particularly for patients who struggle with frequent in-per-
+son visits. 31 Conventional 2D photos fail to provide enough
+Fig. 6 – Qualitative comparison of the DenGaussDiff framework with other methods on the Oral Diseases dataset.
+Table 3 – Quantitative comparison of the DenGaussDiff framework with other methods on the Oral Diseases dataset.
+Region Method PSNR " SSIM" LPIPS# CD (mm)# F1@0.04" IoU"
+Dental plaque SAP3D 11.89 0.515 0.511 0.591 0.469 0.139
+FSGS 13.93 0.627 0.385 0.386 0.601 0.229
+MVSplat360 14.04 0.647 0.371 0.356 0.605 0.266
+TeethDreamer 14.99 0.715 0.271 0.288 0.682 0.302
+DenGaussDiff 15.53 0.721 0.258 0.261 0.719 0.334
+Tooth absence SAP3D 14.77 0.545 0.482 0.528 0.579 0.188
+FSGS 17.10 0.698 0.265 0.259 0.762 0.328
+MVSplat360 16.50 0.668 0.312 0.325 0.678 0.311
+TeethDreamer 17.46 0.714 0.241 0.239 0.776 0.332
+DenGaussDiff 17.71 0.755 0.198 0.236 0.791 0.385
+Tooth decay SAP3D 12.47 0.541 0.442 0.523 0.598 0.192
+FSGS 13.54 0.604 0.355 0.405 0.689 0.225
+MVSplat360 14.73 0.678 0.272 0.343 0.748 0.334
+TeethDreamer 14.67 0.648 0.304 0.381 0.711 0.276
+DenGaussDiff 15.29 0.702 0.251 0.304 0.762 0.367
+ai-based 3d dental crown reconstruction 7
+=== Page 8 ===
+3D details needed for monitoring. This limitation necessitates
+methods to reconstruct precise crown models from sparse,
+accessible intraoral images. To meet this need, we propose
+DenGaussDiff, a high-ﬁdelity framework for dental crown
+reconstruction via 3D Gaussian neural ﬁelds and diffusion
+priors.
+For input images, suitable imaging perspectives are
+required to cover all anatomical crown surfaces. Clinically, at
+least 5 intraoral views were taken for each patient: a frontal
+view with teeth in occlusion, left/right buccal views and 2
+occlusal views. 10 Such views can also be easily learned and
+reproduced by patients for self-photography. 32 In addition to
+imaging perspectives, high and consistent-resolution images
+are recommended to achieve more accurate reconstructed
+models in our methods. Currently, the resolution of smart-
+phones has improved rapidly and is sufﬁcient to meet the
+input requirements.33 For future home use, such standardisa-
+tion could be further supported by providing patients with
+simple cheek retractors and clear step-by-step instructions
+delivered through a mobile application on how to position
+the camera and open the mouth so that all teeth are visible.
+In addition, similar smartphone applications have been
+reported that help patients capture standardised intraoral
+photographs with sufﬁcient accuracy for clinical use. 33 As a
+result, reconstruction can be achieved using these images
+obtained at the patient’s home through our framework, sig-
+niﬁcantly advancing the application of digital orthodontics.
+AI-aided 3D reconstruction is of great importance in clini-
+cal application,34 so some key methods in 3D Gaussian neural
+ﬁelds were incorporated in DenGaussDiff framework. Firstly,
+SAM, as a basic segmentation model, provides reliable crown
+data for subsequent reconstruction. Then, ControlNet++ with
+camera pose calculation can generate multiple views from
+patients’ the intraoral images and ensure geometric
+consistency among the views. 18 On this basis, learnable neu-
+ral representations were used to optimise dental crown
+reconstruction from multiple perspectives through a dense
+grid system and further enhanced rendering efﬁciency com-
+bining multiscale Gaussian rendering. 35 The results of abla-
+tion studies also showed that the synergistic design of this
+technical route signiﬁcantly enhanced the ﬁdelity and consis-
+tency of the dental crown structure. Therefore, high-ﬁdelity
+dental crown reconstruction was achieved using only 5
+intraoral images, thereby facilitating clinical adoption includ-
+ing remote diagnosis and monitoring based on the DenGauss-
+Diff framework.
+On our dental crown dataset, qualitative and quantitative
+evaluations against existing methods showed DenGaussDiff’s
+superiority across key indicators including PSNR, SSIM, LPIPS,
+F1-score and IoU. Improvement in PSNR and SSIM indicates
+better retention of structural information, 36 which is espe-
+cially important for the identiﬁcation of crown boundaries,
+occlusal and interdental contact points in orthodontics. A
+lower LPIPS reﬂects great microstructural reconstruction, 37
+making DenGaussDiff capable of detecting early enamel
+demineralisation. Higher F1-score and IoU indicates more
+stability of dental segmentation and recognition, 38 support-
+ing subsequent digital measurements like tooth position
+analysis, space analysis, the curve of Spee, length and width
+evaluation. Thus, precise dental crown reconstruction ena-
+bles DenGaussDiff to be applied in the diagnosis of diverse
+malocclusions clinically.
+Moreover, DenGaussDiff achieved crown structural pres-
+ervation with a maxillary CD of 0.208 mm and a mandibular
+CD of 0.244 mm. A lower CD indicates that the geometric
+position and shape are closer to the actual structure, 39
+enabling its application in orthodontic monitoring. This is
+because orthodontic monitoring relies on the precise detec-
+tion of small tooth displacements. For example, during clear
+aligner treatment, tooth movement are typically planned in
+steps of 0.25 to 0.33 mm per aligner. 40 However, multiple clin-
+ical studies have reported that actual tooth movement may
+differ from the predesigned plan. 41,42 Possible reason is that
+some factors can cause variations in the rate of tooth move-
+ment like vertical skeletal pattern, patient compliance and
+age, which in turn leads to a mismatch between dental crown
+and clear aligners. 43,44 With our precisely reconstructed
+Fig. 7 – Visualisation effect of DenGaussDiff framework in 2-stage ablation experiments.
+Table 4 – Results of the ablation experiments for the key
+components of the DenGaussDiff framework.
+Method PSNR" SSIM" LPIPS#
+DenGaussDiff w/o A3 13.89 0.521 0.387
+DenGaussDiff w/o A1 14.68 0.589 0.289
+DenGaussDiff w/o A2 14.55 0.547 0.311
+DenGaussDiff 15.81 0.648 0.239
+8 liao et al.
+=== Page 9 ===
+models during orthodontic treatment, this mismatch can be
+identiﬁed early, allowing timely adjustment of clear aligners.
+In addition, a high proportion of point overlap showed that
+reconstructed crowns maintained good geometric consis-
+tency with the paired IOS model. Although DenGaussDiff still
+requires more clinical studies, there is potential for support-
+ing computer-aided design and fabrication of appliances like
+clear aligners in the future. This advancement is expected to
+make clinical treatment more convenient for both patients
+and orthodontists.
+Clinically, orthodontic patients often present with com-
+plex oral health conditions. 45 Therefore, DenGaussDiff was
+evaluated on the public dataset for its ability to capture path-
+ological details in the presence of dental plaque, tooth
+absence and tooth decay. According to qualitative assess-
+ment, the reconstruction quality has nearly reached the
+standards for visual clinical diagnosis ( Figure 6 ). For crowns
+with dental plaque, it achieved an F1 score of 0.719, suggest-
+ing that it can effectively capture the ﬁne textural details and
+colour distribution in plaque. In cases with tooth absence,
+DenGaussDiff reﬂects its capability to capture the spatial rela-
+tionships between the missing tooth and adjacent teeth. In
+addition, its precise rendering of carious regions, including
+changes in colour and texture, indicates potential in support-
+ing visual-based early caries ICDAS scoring.
+In orthodontic clinical research, measurement discrepan-
+cies of less than 0.5 mm between digital and plaster models
+have been reported as clinically insigniﬁcant. 46 Another clini-
+cal study suggested that discrepancies of 0.35 mm and
+0.4 mm are clinically acceptable for speciﬁc orthodontic
+measurements.47 On our orthodontic crown dataset, the CD
+values were 0.208 mm and 0.244 mm and on the public data-
+sets the values were 0.261 mm, 0.236 mm and 0.304 mm. All
+these results fall well below the clinical tolerance threshold.
+In summary, the potential clinical value of the DenGauss-
+Diff framework is anticipated to be applied in the following 3
+aspects: (1) Digital epidemiological surveys: In our frame-
+work, patients are only required to provide 5 intraoral images
+that are easily obtained, from which precise dental models
+can be reconstructed. This enables digital epidemiological
+analyses of malocclusion and other oral diseases, which is
+especially beneﬁcial for patients who have limited access to
+regular oral examinations. (2) Early caries detection: In
+response to the increased risk of plaque retention caused by
+orthodontic appliances, DenGaussDiff can detect microstruc-
+tural changes at the early stage of enamel demineralisation,
+enabling early caries detection. (3) Remote orthodontic moni-
+toring: In long-term orthodontic treatments such as clear
+aligner therapy, sequential dental models can be recon-
+structed at the different stages of treatment. By analysing
+these reconstructions, clinicians can accurately assess tooth
+movement alignment and promptly determine whether
+intervention is needed, signiﬁcantly reducing the number of
+patient visits.
+This study also has certain limitations. Foremost, the Den-
+GaussDiff framework is restricted to crown morphology
+reconstruction and cannot reconstruct complete dental arch
+or gingival anatomy. Our framework will be further devel-
+oped to reconstruct complete dental arch, allowing more
+detailed information for clinicians. Additionally, the current
+validation of the reconstructed crown models mainly relies
+on quantitative and qualitative experiments and alignment
+with paired IOS models. Future studies are required to evalu-
+ate the application of DenGaussDiff in clinical practice.
+Recent reports also emphasise that dental AI still faces risks
+and challenges, indicating the need for improved patient
+communication and responsible implementation of our
+framework.48
+Conclusions
+Our DenGaussDiff framework was highly accurate in 3D den-
+tal crown reconstruction using 5 intraoral images. It achieved
+signiﬁcant improvements over other methods across differ-
+ent indicators in qualitative and quantitative experiments. In
+contrast with the clinical intraoral scanning method, it shows
+high agreement with the IOS model. Moreover, DenGaussDiff
+demonstrated the potential to detect common oral diseases,
+including dental plaque, tooth absence and tooth decay, in
+the public dataset. Further work is needed to bring the Den-
+GaussDiff framework to clinical practice, contributing to the
+advancement of digital orthodontics.
+Author contributions
+Acquisition of data: Ni and Xinyu ；analysis, or interpretation
+of data: Wenkang; Drafting of the manuscript: Ni and Xinyu;
+Critical revision of the manuscript for important intellectual con-
+tent: N i ,X i n y u ,X u e j u na n dS h u i x u e ;Supervision: Xuejun
+and Shuixue.
+Funding
+This work was supported in part by the National Natural Sci-
+ence Foundation of China [grant numbers 82360182,
+82260197], in part by the Guangxi Medical and Health Appro-
+priate Technology Development and Promotion Application
+Project under Grant S2023095, in part by the Clinical Key Spe-
+cialty Construction Project of the Afﬁliated Stomatological
+Hospital of Guangxi Medical University under Grant
+LCZDZK2023015, in part by the Guangxi Natural Science
+Foundation [grant numbers 2025GXNSFAA069789].
+Conﬂicts of interest
+None disclosed.
+Data availability
+Data will be made available on request. The public dataset
+supporting the conclusions of this article is available in the
+https://www.kaggle.com/datasets/salmansajid05/oral-dis
+eases.
+ai-based 3d dental crown reconstruction 9
+=== Page 10 ===
+REFERENCES
+1. Samaranayake L, Tuygunov N, Schwendicke F, et al. The
+transformative role of artiﬁcial intelligence in dentistry: a
+comprehensive overview. part 1: fundamentals of AI, and its
+contemporary applications in dentistry. Int Dent J
+2025;75:383–96. doi: 10.1016/j.identj.2025.02.005.
+2. Fawaz P, El Sayegh P, Vande Vannet B. Artiﬁcial intelligence in
+revolutionizing orthodontic practice. World J Methodol
+2025;15:100598. doi: 10.5662/wjm.v15.i3.100598.
+3. Bardideh E, Lal Alizadeh F, Amiri M, Ghorbani M. Designing an
+artiﬁcial intelligence system for dental occlusion classiﬁca-
+tion using intraoral photographs: a comparative analysis
+between artiﬁcial intelligence-based and clinical diagnoses.
+Am J Orthod Dentofacial Orthop 2024;166:125–37. doi: 10.1016/
+j.ajodo.2024.03.012.
+4. Cao L, van Nistelrooij N, Liu J, et al. Fully automated tooth seg-
+mentation and labeling for both full- and partial-arch intraoral
+scans using deep learning. Int Dent J 2025;75:100950. doi:10.1016/
+j.identj.2025.100950.
+5. Wang S, Lei C, Liang Y, et al. A 3D dental model dataset with
+pre/post-orthodontic treatment for automatic tooth align-
+ment. Sci Data 2024;11:1277. doi: 10.1038/s41597-024-04138-7.
+6. Wafaie K, Rizk MZ, Basyouni ME, Daniel B, Mohammed H.
+Tele-orthodontics and sensor-based technologies: a system-
+atic review of interventions that monitor and improve com-
+pliance of orthodontic patients. Eur J Orthod 2023;45:450–61.
+doi: 10.1093/ejo/cjad004.
+7. Sandler J, Murray A. Digital photography in orthodontics. J
+Orthod 2001;28:197–201. doi: 10.1093/ortho/28.3.197.
+8. Sandler J, Murray A. Clinical photographs — the gold standard.
+J Orthodont 2002;29:158–61.
+9. Suese K. Progress in digital dentistry: the practical use of
+intraoral scanners. Dent Mater J 2020;39:52–6. doi: 10.4012/
+dmj.2019-224.
+10. Bengel W. Standardization in dental photography. Int Dent J
+1985;35:210–7.
+11. Gan Y, Xia Z, Xiong J, Li G, Zhao Q. Tooth and alveolar bone
+segmentation from dental computed tomography images.
+IEEE J Biomed Health Inform 2017;22:196–204 .
+12. Wu B. Research and design of cloud-based digital three-
+dimensional scanning system for denture digitization. 2023
+IEEE 3rd International Conference on Data Science and Com-
+puter Application (ICDSCA 2023). Piscataway, NJ, USA: IEEE;
+2023. p. 439–43.
+13. Chen Y, Gao S, Tu P, Chen X. Automatic 3D teeth reconstruc-
+tion from ﬁve intra-oral photos using parametric teeth model.
+IEEE Trans Visual Computer Graphics 2023 .
+14. Liang Y, Song W, Yang J, et al. X2Teeth: 3D teeth reconstruc-
+tion from a single panoramic radiograph. Medical Image Com-
+puting and Computer Assisted Intervention–MICCAI 2020: 23rd
+International Conference, Lima, Peru, October 4 –8, 2020, Pro-
+ceedings, Part II. Cham, Switzerland: Springer; 2020. p. 400–9.
+15. Song W, Liang Y, Yang J, Wang K, He L. Oral-3D: reconstruct-
+ing the 3D structure of oral cavity from panoramic X-ray. In:
+Proceedings of the AAAI Conference on Artiﬁcial Intelligence.
+Palo Alto, CA, USA: AAAI Press; 2021. p. 566–73 .
+16. Kirillov A, Mintun E, Ravi N, et al. Segment anything. In: Pro-
+ceedings of the IEEE/CVF International Conference on
+Computer Vision (ICCV 2023). Piscataway, NJ, USA: IEEE; 2023.
+p. 4015–26.
+17. Liu S. Image segmentation technology of the Otsu method for
+image materials based on binary PSO algorithm. In: Jin D,
+Lin S), editors. Advances in Computer Science, Intelligent Sys-
+tem and Environment. Berlin, Heidelberg, Germany: Springer;
+2011. p. 415–9.
+18. Li M, Yang T, Kuang H, et al. ControlNet ++: improving condi-
+tional controls with efﬁcient consistency feedback. European
+Conference on Computer Vision (ECCV 2024) Proceedings.
+Cham, Switzerland: Springer; 2024. p. 129–47 .
+19. Besl PJ, McKay ND. A method for registration of 3-D shapes.
+IEEE Trans Pattern Analysis Mach Intell 1992;14:239–56. doi:
+10.1109/34.121791.
+20. Chetverikov D, Svirko D, Stepanov D, Krsek P. The trimmed
+iterative closest point algorithm. In Proceedings of the 2002
+International Conference on Pattern Recognition (ICPR 2002),
+545−548, vol. 3. IEEE, Piscataway, NJ, USA (2002).
+TaggedAPTARAListItemTaggedAPTARAListLabel21TaggedAPTARAEnd. Oral Diseases Dataset, Salman Sajid. Kaggle. Available at:https://
+www.kaggle.com/datasets/salmansajid05/oral-diseases.
+22. Chen W, Lu S, Liu B, et al. CitrusYOLO: a algorithm for citrus
+detection under orchard environment based on YOLOV4. Mul-
+timedia Tools Appl 2022;81:31363–89.
+23. Lin A, Zhang JY, Ramanan D, Tulsiani S. Relpose ++: recovering
+6D poses from sparse-view observations. In: Proceedings of
+the 2024 International Conference on 3D Vision (3DV). Piscat-
+away, NJ, USA: IEEE; 2024. p. 106–15 .
+24. L i uR ,C h e n gY ,H u a n gS ,L iC ,C h e n gX .T r a n s f o r m e r -
+based high-ﬁdelity facial displacement completion for
+d e t a i l e d3 df a c er e c o n s t r u c tion. IEEE Trans Multimed
+2023;26:799–810 .
+25. Liao N, Dai J, Tang Y, Zhong Q, Mo S. ICVM: an interpretable
+deep learning model for CVM assessment under label uncer-
+tainty. IEEE J Biomed Health Inform 2022;26:4325–34 .
+26. Zhu Z, Fan Z, Jiang Y, Wang Z. FSGS: real-time few-shot view
+synthesis using Gaussian splatting. In European Conference
+on Computer Vision (ECCV 2025) Proceedings, 145 −163.
+Springer, Cham, Switzerland (2025).
+27. Han X, Gao Z, Kanazawa A, Goel S, Gandelsman Y. The more
+you see in 2D the more you perceive in 3D. In: Proceedings of
+the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR 2024), 20912 –20922. Piscataway, NJ, USA:
+IEEE; 2024.
+28. Chen Y, Zheng C, Xu H, et al. MVSplat360: feed-forward 360
+scene synthesis from sparse views. Advances in Neural Infor-
+mation Processing Systems 2024;37:107064–86.
+29. Xu C, Liu Z, Liu Y, et al. TeethDreamer: 3D teeth reconstruc-
+tion from ﬁve intra-oral photographs. In Medical Image Com-
+puting and Computer-Assisted Intervention – MICCAI 2024:
+Proceedings. Cham, Switzerland: Springer; 2024. p. 712–21 .
+30. Tanna NK, AlMuzaini A, Mupparapu M. Imaging in orthodon-
+tics. Dent Clin North Am 2021;65:623–41. doi: 10.1016/j.
+cden.2021.02.008.
+31. Christopoulou I, Kaklamanos EG, Makrygiannakis MA, et al.
+Intraoral scanners in orthodontics: a critical review. Int J Envi-
+ron Res Public Health 2022;19. doi: 10.3390/ijerph19031407.
+32. Maret D, Peters OA, Auria JP, Savall F, Vigarios E. Smartphone
+oral self-photography in teledentistry: recommendations for
+the patient. J Telemed Telecare 2024;30:186–93. doi: 10.1177/
+1357633X211028513.
+33. Morris RS, Hoye LN, Mohammed HE, et al. Accuracy of dental
+monitoring 3D digital dental models using photograph and video
+mode. Am J Orthod Dentofacial Orthop 2019;156:420–8. doi:
+10.1016/j.ajodo.2019.02.014.
+34. Rahman H, Khan AR, Sadiq T, et al. A systematic literature
+review of 3D deep learning techniques in computed tomogra-
+phy reconstruction. Tomography 2023;9:2158–89. doi: 10.3390/
+tomography9060169.
+35. Kerbl B, Kopanas G, Leimk €uhler T, Drettakis G. 3d gaussian
+splatting for real-time radiance ﬁeld rendering. ACM Trans
+Graph 2023;42 139:131-139:114.
+36. Zhou W, Bovik AC, Sheikh HR, Simoncelli EP. Image quality
+assessment: from error visibility to structural similarity. IEEE
+Trans Image Process 2004;13:600–12. doi: 10.1109/TIP.2003.
+819861.
+10 liao et al.
+=== Page 11 ===
+37. Zhang R, Isola P, Efros AA, Shechtman E, Wang O. The Unrea-
+sonable effectiveness of deep features as a perceptual metric.
+(2018). https://doi.org/10.48550/arXiv.1801.03924
+38. Kus Z, Aydin M. MedSegBench: a comprehensive benchmark
+for medical image segmentation in diverse data modalities.
+Sci Data 2024;11:1283. doi: 10.1038/s41597-024-04159-2.
+39. Lapenna M, Faglioni F, Chand K , et al. Chamfer distance
+for non-linear registration o f triply periodic minimal sur-
+face lattices. Additive Manufact Lett 2025;14:100299. doi:
+10.1016/j.addlet.2025.100299 .
+40. Hassanaly T, Rabal-Solans A, Mediero-Perez MC, Nieto-San-
+chez I. A comparison of the upper anterior teeth movements
+with optimized and conventional attachment. J Clin Exp Dent
+2024;16:e480–4. doi: 10.4317/jced.61466.
+41. Tien R, Patel V, Chen T, et al. The predictability of expansion
+with invisalign: a retrospective cohort study. Am J Orthod
+Dentofacial Orthop 2023;163:47–53. doi: 10.1016/j.
+ajodo.2021.07.032.
+42. Alwaﬁ AA, Hannam AG, Yen EH, Zou B. A new method assess-
+ing predicted and achieved mandibular tooth movement in
+adults treated with clear aligners using CBCT and individual
+crown superimposition. Sci Rep 2023;13:4084. doi: 10.1038/
+s41598-023-31339-8.
+43. Chisari JR, McGorray SP, Nair M, Wheeler TT. Variables affect-
+ing orthodontic tooth movement with clear aligners. Am J
+Orthod Dentofacial Orthop 2014;145:S82–91. doi: 10.1016/j.ajo-
+do.2013.10.022.
+44. Castroﬂorio T, Sedran A, Parrini S, et al. Predictability of
+orthodontic tooth movement with aligners: effect of treat-
+ment design. Prog Orthod 2023;24:2. doi: 10.1186/s40510-022-
+00453-0.
+45. Jain N, Dutt U, Radenkov I, Jain S. WHO’s global oral health
+status report 2022: actions, discussion and implementation.
+Oral Dis 2024;30:73–9. doi: 10.1111/odi.14516.
+46. Santoro M, Galkin S, Teredesai M, Nicolay OF, Cangialosi TJ.
+Comparison of measurements made on digital and plaster
+models. Am J Orthod Dentofacial Orthop 2003;124:101–5. doi:
+10.1016/s0889-5406(03)00152-5.
+47. Kardach H, Szponar-Zurowska A, Biedziak B. A comparison of
+teeth measurements on plaster and digital models. J Clin Med
+2023;12. doi: 10.3390/jcm12030943.
+48. Tuygunov N, Samaranayake L, Khurshid Z, et al. The transfor-
+mative role of artiﬁcial intelligence in dentistry: a comprehen-
+sive overview part 2: the promise and perils, and the
+international dental federation communique. Int Dent J
+2025;75:397–404. doi: 10.1016/j.identj.2025.02.006.
+ai-based 3d dental crown reconstruction 11

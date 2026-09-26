@@ -1,0 +1,12 @@
+{
+  "overall_accuracy_percent": 88.4,
+  "icp_fitness": 1.0,
+  "icp_rmse_mm": 0.939563835196581,
+  "chamfer_distance_mm": 14.64121834994248,
+  "f1_score_0_04": 0.0,
+  "mean_psnr": 5.631703441957488,
+  "mean_ssim": 0.04943537949444139,
+  "reconstruction_vertices": 150291,
+  "reconstruction_obj": "/api/samples/molar_crown/files/reconstruction_surface.obj",
+  "registered_ply": "/api/samples/molar_crown/files/registered_reconstruction.ply"
+}

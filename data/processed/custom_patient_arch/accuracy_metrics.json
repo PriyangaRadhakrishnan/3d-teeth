@@ -1,0 +1,12 @@
+{
+  "overall_accuracy_percent": 90.15945819129192,
+  "icp_fitness": 1.0,
+  "icp_rmse_mm": 0.1844558436961642,
+  "chamfer_distance_mm": 0.31744791614652695,
+  "f1_score_0_04": 0.7626041104453746,
+  "mean_psnr": 11.10260521150125,
+  "mean_ssim": 0.21049633805798673,
+  "reconstruction_vertices": 512000,
+  "reconstruction_obj": "/api/samples/custom_patient_arch/files/reconstruction_surface.obj",
+  "registered_ply": "/api/samples/custom_patient_arch/files/registered_reconstruction.ply"
+}

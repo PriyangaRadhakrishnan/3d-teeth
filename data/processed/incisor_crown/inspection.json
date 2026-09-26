@@ -1,0 +1,27 @@
+{
+  "path": "D:\\3d_dental\\data\\raw\\Teeth3DS\\incisor_crown.obj",
+  "vertices": 66,
+  "faces": 128,
+  "bounds_min": [
+    -6.5,
+    -5.0,
+    -6.0
+  ],
+  "bounds_max": [
+    6.5,
+    5.0,
+    6.0
+  ],
+  "center": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "extents": [
+    13.0,
+    10.0,
+    12.0
+  ],
+  "scale": 13.0,
+  "is_watertight": true
+}

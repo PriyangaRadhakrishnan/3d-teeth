@@ -1,0 +1,27 @@
+{
+  "path": "D:\\3d_dental\\data\\raw\\Teeth3DS\\molar_crown.obj",
+  "vertices": 2562,
+  "faces": 5120,
+  "bounds_min": [
+    -10.0,
+    -9.2,
+    -6.8
+  ],
+  "bounds_max": [
+    10.0,
+    9.2,
+    8.2529344
+  ],
+  "center": [
+    0.0,
+    0.0,
+    0.7264671999999996
+  ],
+  "extents": [
+    20.0,
+    18.4,
+    15.052934399999998
+  ],
+  "scale": 20.0,
+  "is_watertight": true
+}

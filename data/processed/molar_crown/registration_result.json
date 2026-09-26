@@ -1,0 +1,35 @@
+{
+  "fitness": 1.0,
+  "inlier_rmse": 0.939563835196581,
+  "correspondences": 150291,
+  "iterations": 30,
+  "transformation": [
+    [
+      0.9999679178446099,
+      0.006030853867937461,
+      0.0052718197180895605,
+      -0.015187277442313457
+    ],
+    [
+      -0.006416372046707322,
+      0.997051877569053,
+      0.07646164794055238,
+      -0.8005524840943283
+    ],
+    [
+      -0.004795148722895587,
+      -0.07649302084275755,
+      0.9970585861979596,
+      -0.11755402855353224
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "reconstruction": "D:\\3d_dental\\data\\processed\\molar_crown\\reconstruction.ply",
+  "original_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\molar_crown.obj",
+  "output": "D:\\3d_dental\\data\\processed\\molar_crown\\registered_reconstruction.ply"
+}

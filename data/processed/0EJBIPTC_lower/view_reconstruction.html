@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>reconstruction_surface.obj</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #141416; color: #ececec; font-family: system-ui, sans-serif; }
+    #hud {
+      position: absolute; left: 16px; top: 16px; z-index: 1;
+      background: rgba(20, 20, 22, 0.72); padding: 10px 12px; border-radius: 8px;
+      font-size: 13px; line-height: 1.45; max-width: 360px;
+    }
+    #hud strong { display: block; margin-bottom: 4px; font-size: 14px; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <div id="hud"><strong>Loading mesh…</strong>reconstruction_surface.obj</div>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+    import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+
+    const hud = document.getElementById("hud");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x141416);
+
+    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 5000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const key = new THREE.DirectionalLight(0xffffff, 1.15);
+    key.position.set(1.5, 2.2, 1.8);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0x9ecbff, 0.45);
+    fill.position.set(-2, 0.4, -1);
+    scene.add(fill);
+
+    const loader = new OBJLoader();
+    loader.load(
+      "./reconstruction_surface.obj",
+      (group) => {
+        const material = new THREE.MeshStandardMaterial({
+          color: 0xe8c9a8,
+          roughness: 0.55,
+          metalness: 0.02,
+          side: THREE.DoubleSide,
+        });
+        let triangles = 0;
+        group.traverse((child) => {
+          if (child.isMesh) {
+            child.material = material;
+            const geom = child.geometry;
+            geom.computeVertexNormals();
+            const index = geom.index;
+            triangles += index ? index.count / 3 : geom.attributes.position.count / 3;
+          }
+        });
+        scene.add(group);
+
+        const box = new THREE.Box3().setFromObject(group);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
+        controls.target.copy(center);
+        const radius = Math.max(size.x, size.y, size.z);
+        camera.position.copy(center).add(new THREE.Vector3(radius * 1.4, radius * 0.8, radius * 1.6));
+        camera.near = radius / 100;
+        camera.far = radius * 20;
+        camera.updateProjectionMatrix();
+        controls.update();
+
+        hud.innerHTML =
+          "<strong>reconstruction_surface.obj</strong>" +
+          `Triangles: ${Math.round(triangles).toLocaleString()}<br>` +
+          "Drag to orbit · scroll to zoom · right-drag to pan";
+      },
+      (event) => {
+        if (!event.total) return;
+        const pct = Math.round((event.loaded / event.total) * 100);
+        hud.innerHTML = `<strong>Loading mesh… ${pct}%</strong>reconstruction_surface.obj`;
+      },
+      (error) => {
+        hud.innerHTML = `<strong>Failed to load OBJ</strong>${error}`;
+      }
+    );
+
+    addEventListener("resize", () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+
+    (function tick() {
+      requestAnimationFrame(tick);
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "path": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper\\mesh_normalized.obj",
+  "vertices": 34834,
+  "faces": 69451,
+  "bounds_min": [
+    -1.0,
+    -0.99123308,
+    -0.77504672
+  ],
+  "bounds_max": [
+    1.0,
+    0.99123308,
+    0.77504672
+  ],
+  "center": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "extents": [
+    2.0,
+    1.98246616,
+    1.55009344
+  ],
+  "scale": 2.0,
+  "is_watertight": false
+}

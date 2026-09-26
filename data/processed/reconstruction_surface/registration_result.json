@@ -1,0 +1,35 @@
+{
+  "fitness": 1.0,
+  "inlier_rmse": 0.010572196597834016,
+  "correspondences": 104324,
+  "iterations": 30,
+  "transformation": [
+    [
+      0.8021031304608259,
+      0.22251059866431575,
+      -0.554183725480091,
+      -0.025006220828204986
+    ],
+    [
+      -0.1310653942501622,
+      0.9709589328344388,
+      0.20015147558551452,
+      -0.012795168207350481
+    ],
+    [
+      0.5826254633424414,
+      -0.08790781666642522,
+      0.8079726389141841,
+      0.0381266589170202
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "reconstruction": "D:\\3d_dental\\data\\processed\\reconstruction_surface\\reconstruction.ply",
+  "original_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\reconstruction_surface.obj",
+  "output": "D:\\3d_dental\\data\\processed\\reconstruction_surface\\registered_reconstruction.ply"
+}

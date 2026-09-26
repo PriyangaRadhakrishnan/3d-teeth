@@ -1,0 +1,45 @@
+{
+  "source_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\incisor_crown.obj",
+  "original_center": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": 0.15384615384615385,
+  "translation": [
+    -0.0,
+    -0.0,
+    -0.0
+  ],
+  "rotation": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "normalized_bounds": [
+    [
+      -1.0,
+      -0.7692307692307693,
+      -0.9230769230769231
+    ],
+    [
+      1.0,
+      0.7692307692307693,
+      0.9230769230769231
+    ]
+  ],
+  "working_extent": 2.0,
+  "normalized_obj": "mesh_normalized.obj"
+}

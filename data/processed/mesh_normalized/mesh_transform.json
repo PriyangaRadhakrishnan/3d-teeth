@@ -1,0 +1,45 @@
+{
+  "source_obj": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper\\mesh_normalized.obj",
+  "original_center": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": 1.0,
+  "translation": [
+    -0.0,
+    -0.0,
+    -0.0
+  ],
+  "rotation": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "normalized_bounds": [
+    [
+      -1.0,
+      -0.99123308,
+      -0.77504672
+    ],
+    [
+      1.0,
+      0.99123308,
+      0.77504672
+    ]
+  ],
+  "working_extent": 2.0,
+  "normalized_obj": "mesh_normalized.obj"
+}

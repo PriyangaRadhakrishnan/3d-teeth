@@ -1,0 +1,45 @@
+{
+  "source_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\premolar_crown.obj",
+  "original_center": [
+    0.0,
+    0.0,
+    0.7643335099999997
+  ],
+  "scale": 0.12820512820512822,
+  "translation": [
+    -0.0,
+    -0.0,
+    -0.7643335099999997
+  ],
+  "rotation": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "normalized_bounds": [
+    [
+      -0.7916666666666667,
+      -1.0,
+      -0.9729914756410257
+    ],
+    [
+      0.7916666666666667,
+      1.0,
+      0.9729914756410257
+    ]
+  ],
+  "working_extent": 2.0,
+  "normalized_obj": "mesh_normalized.obj"
+}

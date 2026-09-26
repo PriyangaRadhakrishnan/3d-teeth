@@ -1,0 +1,9 @@
+{
+  "mode": "neural-field-gaussian-color-optimization",
+  "device": "cuda",
+  "iterations": 500,
+  "points": 35000,
+  "initial_loss": 0.21987037360668182,
+  "final_loss": 0.001518924138508737,
+  "output": "D:\\3d_dental\\data\\processed\\0EJBIPTC_lower\\gaussian_model.pt"
+}

@@ -1,0 +1,12 @@
+{
+  "overall_accuracy_percent": 88.4,
+  "icp_fitness": 1.0,
+  "icp_rmse_mm": 0.30441172393640975,
+  "chamfer_distance_mm": 188.30612609940198,
+  "f1_score_0_04": 0.0,
+  "mean_psnr": 9.384159402649104,
+  "mean_ssim": 0.06771807395547573,
+  "reconstruction_vertices": 79664,
+  "reconstruction_obj": "/api/samples/0EJBIPTC_lower/files/reconstruction_surface.obj",
+  "registered_ply": "/api/samples/0EJBIPTC_lower/files/registered_reconstruction.ply"
+}

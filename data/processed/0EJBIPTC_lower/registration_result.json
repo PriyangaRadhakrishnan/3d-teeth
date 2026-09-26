@@ -1,0 +1,35 @@
+{
+  "fitness": 1.0,
+  "inlier_rmse": 0.30441172393640975,
+  "correspondences": 79664,
+  "iterations": 30,
+  "transformation": [
+    [
+      0.9999995523268858,
+      0.0009353534271736767,
+      -0.0001430384397740418,
+      0.0017054996644057137
+    ],
+    [
+      0.00014092100488700455,
+      0.0022634547345811995,
+      0.9999974284536622,
+      103.5257147577569
+    ],
+    [
+      0.0009356747829029234,
+      -0.9999970009388193,
+      0.00226332191034744,
+      -99.51683938396334
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "reconstruction": "D:\\3d_dental\\data\\processed\\0EJBIPTC_lower\\reconstruction.ply",
+  "original_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\0EJBIPTC_lower.obj",
+  "output": "D:\\3d_dental\\data\\processed\\0EJBIPTC_lower\\registered_reconstruction.ply"
+}

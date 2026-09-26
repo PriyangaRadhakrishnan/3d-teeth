@@ -1,0 +1,35 @@
+{
+  "path": "D:\\3d_dental\\data\\raw\\Teeth3DS\\0EJBIPTC_lower.obj",
+  "vertices": 102949,
+  "faces": 178421,
+  "bounds_min": [
+    -42.12212471,
+    -29.87307273,
+    -121.99568
+  ],
+  "bounds_max": [
+    43.70913739,
+    33.71578153,
+    -81.18292967
+  ],
+  "center": [
+    0.7935063400000004,
+    1.9213544000000002,
+    -101.589304835
+  ],
+  "extents": [
+    85.8312621,
+    63.588854260000005,
+    40.81275033
+  ],
+  "scale": 85.8312621,
+  "is_watertight": false,
+  "annotation": {
+    "jaw": "lower",
+    "patient_id": "",
+    "label_count": 110804,
+    "instance_count": 110804,
+    "labels_match_vertices": false,
+    "instances_match_vertices": false
+  }
+}

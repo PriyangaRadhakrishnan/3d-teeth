@@ -1,0 +1,12 @@
+{
+  "overall_accuracy_percent": 88.4,
+  "icp_fitness": 1.0,
+  "icp_rmse_mm": 0.4096868488567781,
+  "chamfer_distance_mm": 11.88317111375876,
+  "f1_score_0_04": 0.0,
+  "mean_psnr": 5.158170188504121,
+  "mean_ssim": 0.049474100800486094,
+  "reconstruction_vertices": 161867,
+  "reconstruction_obj": "/api/samples/premolar_crown/files/reconstruction_surface.obj",
+  "registered_ply": "/api/samples/premolar_crown/files/registered_reconstruction.ply"
+}

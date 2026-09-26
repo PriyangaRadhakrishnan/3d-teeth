@@ -1,0 +1,5 @@
+resolution: 640
+field_of_view_degrees: 39
+views: [top, front, back, left, right]
+normal_encoding: "RGB = camera-space XYZ * 0.5 + 0.5"
+depth_format: exr

@@ -1,0 +1,35 @@
+{
+  "fitness": 1.0,
+  "inlier_rmse": 0.34851247084945025,
+  "correspondences": 79664,
+  "iterations": 30,
+  "transformation": [
+    [
+      0.9999996504889529,
+      0.0008285168894603804,
+      -0.00011216833099020889,
+      0.004087495654700795
+    ],
+    [
+      0.00011036068487277193,
+      0.0021815090621627392,
+      0.9999976144165189,
+      103.52769775937331
+    ],
+    [
+      0.0008287596091949193,
+      -0.9999972772852813,
+      0.0021814168640109915,
+      -99.5234912547769
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "reconstruction": "data\\processed\\0EJBIPTC_lower\\reconstruction.ply",
+  "original_obj": "data\\raw\\Teeth3DS\\0EJBIPTC_lower.obj",
+  "output": "data\\processed\\0EJBIPTC_lower\\registered_reconstruction.ply"
+}

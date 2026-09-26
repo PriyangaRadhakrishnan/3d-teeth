@@ -1,0 +1,54 @@
+{
+  "samples": [
+    {
+      "sample_id": "mesh_normalized",
+      "path": "D:\\3d_dental\\data\\processed\\mesh_normalized",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "molar_crown",
+      "path": "D:\\3d_dental\\data\\processed\\molar_crown",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "premolar_crown",
+      "path": "D:\\3d_dental\\data\\processed\\premolar_crown",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "incisor_crown",
+      "path": "D:\\3d_dental\\data\\processed\\incisor_crown",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "SAMPLE_upper",
+      "path": "D:\\3d_dental\\data\\processed\\SAMPLE_upper",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "reconstruction_surface",
+      "path": "D:\\3d_dental\\data\\processed\\reconstruction_surface",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "0EJBIPTC_lower",
+      "path": "D:\\3d_dental\\data\\processed\\0EJBIPTC_lower",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "custom_patient_arch",
+      "path": "D:\\3d_dental\\data\\processed\\custom_patient_arch",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "00OMSZGW_upper",
+      "path": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper",
+      "metadata": "metadata.json"
+    },
+    {
+      "sample_id": "Mandible",
+      "path": "D:\\3d_dental\\data\\processed\\Mandible",
+      "metadata": "metadata.json"
+    }
+  ]
+}

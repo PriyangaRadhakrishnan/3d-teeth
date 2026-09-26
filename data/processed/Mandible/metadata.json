@@ -1,0 +1,54 @@
+{
+  "sample_id": "Mandible",
+  "views": [
+    "frontal",
+    "left_buccal",
+    "right_buccal",
+    "maxillary_occlusal",
+    "mandibular_occlusal"
+  ],
+  "resolution": [
+    640,
+    640
+  ],
+  "camera_file": "cameras/cameras.json",
+  "image_files": [
+    "images/frontal.png",
+    "images/left_buccal.png",
+    "images/right_buccal.png",
+    "images/maxillary_occlusal.png",
+    "images/mandibular_occlusal.png"
+  ],
+  "depth_files": [
+    "depth/frontal.exr",
+    "depth/left_buccal.exr",
+    "depth/right_buccal.exr",
+    "depth/maxillary_occlusal.exr",
+    "depth/mandibular_occlusal.exr"
+  ],
+  "depth_visualization_files": [
+    "depth_vis/frontal.png",
+    "depth_vis/left_buccal.png",
+    "depth_vis/right_buccal.png",
+    "depth_vis/maxillary_occlusal.png",
+    "depth_vis/mandibular_occlusal.png"
+  ],
+  "normal_files": [
+    "normals/frontal.png",
+    "normals/left_buccal.png",
+    "normals/right_buccal.png",
+    "normals/maxillary_occlusal.png",
+    "normals/mandibular_occlusal.png"
+  ],
+  "mask_files": [
+    "masks/frontal.png",
+    "masks/left_buccal.png",
+    "masks/right_buccal.png",
+    "masks/maxillary_occlusal.png",
+    "masks/mandibular_occlusal.png"
+  ],
+  "normal_encoding": "RGB = camera-space XYZ * 0.5 + 0.5",
+  "depth_encoding": "metric camera Z depth in EXR",
+  "source_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\Mandible.obj",
+  "jaw": null
+}

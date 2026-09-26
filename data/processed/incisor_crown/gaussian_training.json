@@ -1,0 +1,9 @@
+{
+  "mode": "neural-field-gaussian-color-optimization",
+  "device": "cuda",
+  "iterations": 150,
+  "points": 10000,
+  "initial_loss": 0.27930590510368347,
+  "final_loss": 0.2442619800567627,
+  "output": "D:\\3d_dental\\data\\processed\\incisor_crown\\gaussian_model.pt"
+}
