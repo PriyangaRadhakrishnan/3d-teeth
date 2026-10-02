@@ -325,6 +325,40 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    /* Multi-Modal Gallery Tabs & Interactive Stage 1 */
+    .gallery-tab {
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .gallery-tab:hover {
+      background: rgba(0, 242, 254, 0.1);
+      color: var(--accent-cyan);
+      border-color: rgba(0, 242, 254, 0.3);
+    }
+    .gallery-tab.active {
+      background: rgba(0, 242, 254, 0.18);
+      color: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+    }
+    #stage1Card {
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    #stage1Card:hover {
+      border-color: var(--accent-cyan) !important;
+      background: rgba(0, 242, 254, 0.12) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0, 242, 254, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -425,10 +459,13 @@
           <i data-lucide="layers" style="color: var(--accent-cyan);"></i> DenGaussDiff 10-Stage Reconstruction & Evaluation Pipeline
         </h4>
         <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem;">
-          <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); font-size: 0.75rem;">
-            <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.2rem;">Stage 1</div>
+          <div id="stage1Card" style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); font-size: 0.75rem;" onclick="viewSAMStage()" title="Click to inspect Phase 1 SAM segmentation overlays below">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+              <span style="color: var(--accent-cyan); font-weight: 700;">Stage 1</span>
+              <span style="font-size: 0.65rem; background: rgba(0, 242, 254, 0.2); color: var(--accent-cyan); padding: 1px 5px; border-radius: 4px; font-weight: 700;">Phase 1: SAM</span>
+            </div>
             <div style="font-weight: 600;">SAM & Otsu Segmentation</div>
-            <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Background & Noise Removal</div>
+            <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Inspect SAM masks & overlays ➔</div>
           </div>
           <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); font-size: 0.75rem;">
             <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.2rem;">Stage 2</div>
@@ -478,13 +515,25 @@
         </div>
       </div>
 
-      <!-- 5-View Render Gallery -->
-      <div class="glass-card">
-        <h4 style="margin-bottom: 1rem; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
-          <i data-lucide="camera"></i> 5-View Synthesized Images & Neural Renders
-        </h4>
+      <!-- Multi-Modal Render & Phase 1 SAM Inspection Gallery -->
+      <div class="glass-card" id="galleryCard">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+          <h4 style="font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+            <i data-lucide="camera"></i> Multi-Modal Views & Phase 1 SAM Inspection
+          </h4>
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;" id="galleryTabs">
+            <button class="gallery-tab active" data-tab="images" onclick="switchGalleryTab('images')">Original Views</button>
+            <button class="gallery-tab" data-tab="sam_overlays" onclick="switchGalleryTab('sam_overlays')">SAM Overlays (Phase 1)</button>
+            <button class="gallery-tab" data-tab="masks" onclick="switchGalleryTab('masks')">Binary Masks (Phase 1)</button>
+            <button class="gallery-tab" data-tab="sam_contact_sheet" onclick="switchGalleryTab('sam_contact_sheet')">SAM Contact Sheet</button>
+            <button class="gallery-tab" data-tab="normals" onclick="switchGalleryTab('normals')">Surface Normals</button>
+          </div>
+        </div>
         <div class="gallery-container" id="viewsGallery">
           <!-- Dynamically populated view thumbnails -->
+        </div>
+        <div id="contactSheetView" style="display: none; text-align: center; margin-top: 1rem;">
+          <img id="contactSheetImg" src="" alt="SAM Contact Sheet" style="max-width: 100%; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer;" onclick="openLightbox(this.src, 'SAM Multi-View Contact Sheet')">
         </div>
       </div>
 
@@ -650,23 +699,86 @@
 
 
       // Update Gallery
+      currentSampleDetails = details;
+      renderGallery();
+    }
+
+    let currentSampleDetails = null;
+    let currentGalleryTab = 'images';
+
+    function switchGalleryTab(tabKey) {
+      currentGalleryTab = tabKey;
+      document.querySelectorAll('.gallery-tab').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-tab') === tabKey);
+      });
+      renderGallery();
+    }
+
+    function viewSAMStage() {
+      switchGalleryTab('sam_overlays');
+      const el = document.getElementById('galleryCard');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openLightbox(src, title) {
+      const modal = document.getElementById('lightboxModal');
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxTitle').innerText = title || 'Inspection View';
+      modal.style.display = 'flex';
+    }
+
+    function closeLightbox(e) {
+      if (e && e.target && e.target.id === 'lightboxImg') return;
+      document.getElementById('lightboxModal').style.display = 'none';
+    }
+
+    function renderGallery() {
       const gallery = document.getElementById('viewsGallery');
-      gallery.innerHTML = '';
-      const availableViews = Object.keys(details.files.images || {});
-      if (availableViews.length === 0) {
-        gallery.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; padding: 0.5rem;">Multi-view synthesized images available upon pipeline execution.</div>';
-      } else {
-        availableViews.forEach(v => {
-          const imgUrl = details.files.images[v];
-          const item = document.createElement('div');
-          item.className = 'gallery-item';
-          item.innerHTML = `
-            <img src="${imgUrl}" class="gallery-img" alt="${v}">
-            <div class="gallery-lbl">${v.replace('_', ' ')}</div>
-          `;
-          gallery.appendChild(item);
-        });
+      const contactView = document.getElementById('contactSheetView');
+      const contactImg = document.getElementById('contactSheetImg');
+
+      if (!currentSampleDetails || !currentSampleDetails.files) return;
+
+      if (currentGalleryTab === 'sam_contact_sheet') {
+        gallery.style.display = 'none';
+        const sheetUrl = currentSampleDetails.files.sam_contact_sheet;
+        if (sheetUrl) {
+          contactImg.src = sheetUrl;
+          contactView.style.display = 'block';
+        } else {
+          contactView.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; padding: 1.5rem; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border-color);">No SAM contact sheet generated for this sample. Run <code>python scripts/run_sam_segmentation.py</code> to generate contact sheet.</div>';
+          contactView.style.display = 'block';
+        }
+        return;
       }
+
+      contactView.style.display = 'none';
+      gallery.style.display = 'flex';
+      gallery.innerHTML = '';
+
+      const targetMap = currentSampleDetails.files[currentGalleryTab] || {};
+      const views = Object.keys(targetMap);
+
+      if (views.length === 0) {
+        gallery.innerHTML = `<div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem;">No '${currentGalleryTab.replace('_', ' ')}' available for sample <strong>${currentSampleDetails.sample_id}</strong>.</div>`;
+        return;
+      }
+
+      views.forEach(v => {
+        const imgUrl = targetMap[v];
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.style.cursor = 'pointer';
+        item.onclick = () => openLightbox(imgUrl, `${v.toUpperCase()} - ${currentGalleryTab.replace('_', ' ')}`);
+        item.innerHTML = `
+          <img src="${imgUrl}" class="gallery-img" alt="${v}">
+          <div class="gallery-lbl">
+            ${v.replace('_', ' ')}
+            <div style="font-size: 0.65rem; color: var(--accent-cyan); margin-top: 2px;">🔍 Click to enlarge</div>
+          </div>
+        `;
+        gallery.appendChild(item);
+      });
     }
 
     function handleFileUpload(e) {
@@ -748,5 +860,22 @@
       }
     };
   </script>
+
+  <!-- Image Lightbox Modal for Full-Resolution SAM Inspection -->
+  <div id="lightboxModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 8, 17, 0.9); backdrop-filter: blur(10px); z-index: 9999; justify-content: center; align-items: center; padding: 2rem;" onclick="closeLightbox(event)">
+    <div style="position: relative; max-width: 90vw; max-height: 90vh; background: #0c1322; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <h4 id="lightboxTitle" style="font-size: 1rem; color: var(--accent-cyan); font-weight: 700; margin: 0;">Inspection View</h4>
+          <span class="badge" style="font-size: 0.7rem;">Phase 1: SAM</span>
+        </div>
+        <button onclick="closeLightbox()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; font-size: 1.25rem; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center; overflow: hidden; background: #050811; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); padding: 0.5rem;">
+        <img id="lightboxImg" src="" style="max-width: 100%; max-height: 72vh; object-fit: contain; border-radius: 6px;">
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

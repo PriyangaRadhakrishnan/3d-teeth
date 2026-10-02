@@ -90,6 +90,9 @@ def get_sample_details(sample_id: str):
     views = metadata.get("views", ["frontal", "left_buccal", "right_buccal", "maxillary_occlusal", "mandibular_occlusal"])
     
     images = {v: f"/api/samples/{sample_id}/files/images/{v}.png" for v in views if (sample_dir / "images" / f"{v}.png").exists()}
+    masks = {v: f"/api/samples/{sample_id}/files/masks/{v}.png" for v in views if (sample_dir / "masks" / f"{v}.png").exists()}
+    sam_overlays = {v: f"/api/samples/{sample_id}/files/reports/sam_segmentation_visualizations/{v}_sam_overlay.png" for v in views if (sample_dir / "reports" / "sam_segmentation_visualizations" / f"{v}_sam_overlay.png").exists()}
+    contact_sheet = f"/api/samples/{sample_id}/files/reports/sam_segmentation_contact_sheet.png" if (sample_dir / "reports" / "sam_segmentation_contact_sheet.png").exists() else None
     depths = {v: f"/api/samples/{sample_id}/files/depth_vis/{v}.png" for v in views if (sample_dir / "depth_vis" / f"{v}.png").exists()}
     normals = {v: f"/api/samples/{sample_id}/files/normals/{v}.png" for v in views if (sample_dir / "normals" / f"{v}.png").exists()}
     renders = {v: f"/api/samples/{sample_id}/files/gaussian_renders/{v}.png" for v in views if (sample_dir / "gaussian_renders" / f"{v}.png").exists()}
@@ -110,6 +113,9 @@ def get_sample_details(sample_id: str):
         "views": views,
         "files": {
             "images": images,
+            "masks": masks,
+            "sam_overlays": sam_overlays,
+            "sam_contact_sheet": contact_sheet,
             "depths": depths,
             "normals": normals,
             "renders": renders,
