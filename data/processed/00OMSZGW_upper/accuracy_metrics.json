@@ -1,12 +1,79 @@
 {
-  "overall_accuracy_percent": 90.16073846943426,
-  "icp_fitness": 1.0,
-  "icp_rmse_mm": 0.1844558436961642,
-  "chamfer_distance_mm": 0.3173185135891132,
-  "f1_score_0_04": 0.7630677660902122,
-  "mean_psnr": 7.714126243173004,
-  "mean_ssim": 0.2814218504882332,
-  "reconstruction_vertices": 512000,
+  "overall_accuracy_percent": 66.80564805511142,
+  "icp_method": "point_to_plane",
+  "icp_fitness": 0.6332921794310141,
+  "icp_rmse_mm": 0.19583156813238733,
+  "chamfer_distance_mm": 0.32137494832320357,
+  "f1_score_0_04": 0.6365660295395308,
+  "precision_0_25": 0.4668843840853877,
+  "recall_0_25": 1.0,
+  "mean_psnr": 4.3170691384542526,
+  "mean_ssim": 0.6764727754108192,
+  "reconstruction_vertices": 216406,
+  "nsdf_surface_vertices": 75327,
+  "nsdf_surface_faces": 148112,
+  "nsdf_final_loss": 0.4086795449256897,
+  "nsdf_eikonal_loss": 0.17670580744743347,
+  "curvature_mean": 6.211237607492822,
   "reconstruction_obj": "/api/samples/00OMSZGW_upper/files/reconstruction_surface.obj",
-  "registered_ply": "/api/samples/00OMSZGW_upper/files/registered_reconstruction.ply"
+  "registered_ply": "/api/samples/00OMSZGW_upper/files/registered_reconstruction.ply",
+  "nsdf_ply": "/api/samples/00OMSZGW_upper/files/nsdf_surface.ply",
+  "nsdf_obj": "/api/samples/00OMSZGW_upper/files/nsdf_surface.obj",
+  "nsdf_refined_ply": "/api/samples/00OMSZGW_upper/files/nsdf_surface_refined.ply",
+  "features_pt": "/api/samples/00OMSZGW_upper/files/features.pt",
+  "feature_shapes": {
+    "controlnet_shapes": {
+      "scale_1_8": [
+        5,
+        320,
+        64,
+        64
+      ],
+      "scale_1_16": [
+        5,
+        640,
+        32,
+        32
+      ],
+      "scale_1_32": [
+        5,
+        1280,
+        16,
+        16
+      ],
+      "scale_1_64": [
+        5,
+        1280,
+        8,
+        8
+      ]
+    },
+    "fused_shapes": {
+      "scale_1_8": [
+        5,
+        320,
+        64,
+        64
+      ],
+      "scale_1_16": [
+        5,
+        640,
+        32,
+        32
+      ],
+      "scale_1_32": [
+        5,
+        1280,
+        16,
+        16
+      ],
+      "scale_1_64": [
+        5,
+        1280,
+        8,
+        8
+      ]
+    }
+  },
+  "fusion_method": "Geometry-Guided Epipolar Warping & Cross-View Attention Fusion v1.0"
 }

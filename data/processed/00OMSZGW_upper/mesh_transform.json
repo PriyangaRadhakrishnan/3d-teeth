@@ -1,15 +1,15 @@
 {
-  "source_obj": "D:\\3d_dental\\data\\raw\\Teeth3DS\\00OMSZGW_upper.obj",
+  "source_obj": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\mesh_normalized.obj",
   "original_center": [
     0.0,
-    11.362070515,
-    0.5353560500000003
+    0.0,
+    0.0
   ],
-  "scale": 0.034135182573988475,
+  "scale": 1.0,
   "translation": [
     -0.0,
-    -11.362070515,
-    -0.5353560500000003
+    -0.0,
+    -0.0
   ],
   "rotation": [
     [
@@ -30,14 +30,14 @@
   ],
   "normalized_bounds": [
     [
-      -0.9999999999999999,
-      -0.4881720998428952,
-      -0.19147246290568706
+      -1.0,
+      -0.4881721,
+      -0.19147246
     ],
     [
-      0.9999999999999999,
-      0.48817209984289534,
-      0.19147246290568706
+      1.0,
+      0.4881721,
+      0.19147246
     ]
   ],
   "working_extent": 2.0,

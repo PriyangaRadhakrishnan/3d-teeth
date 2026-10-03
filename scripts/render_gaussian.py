@@ -1,12 +1,15 @@
 import argparse
 import sys
 from pathlib import Path
+import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from reconstruction.gaussian_render import render_model
 
 
-def render_gaussian(sample_dir, device="cuda"):
+def render_gaussian(sample_dir, device=None):
+    if device is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
     return render_model(sample_dir, device)
 
 if __name__ == "__main__":

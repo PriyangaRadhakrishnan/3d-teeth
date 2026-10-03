@@ -1,26 +1,27 @@
 {
-  "fitness": 1.0,
-  "inlier_rmse": 0.1844558436961642,
-  "correspondences": 512000,
-  "iterations": 30,
+  "method": "point_to_plane",
+  "fitness": 0.6332921794310141,
+  "inlier_rmse": 0.19583156813238733,
+  "correspondences": 47704,
+  "iterations": 50,
   "transformation": [
     [
-      0.7820635522128608,
-      0.5809655284827308,
-      -0.225511984193717,
-      0.11856727037927732
+      0.8037257316929388,
+      0.5945510513488055,
+      0.02310834383259722,
+      -0.0013268974107585071
     ],
     [
-      -0.61982112732942,
-      0.7627363705318458,
-      -0.1845399663595884,
-      -0.2873411968101054
+      -0.13512033141590607,
+      0.14455994166430428,
+      0.9802269733608007,
+      -0.27370631739593343
     ],
     [
-      0.06479483325306602,
-      0.2840990738856667,
-      0.9566030241437757,
-      -0.10332215541576635
+      0.5794544367357213,
+      -0.7909560484666944,
+      0.19652247998955635,
+      -0.03664311046449088
     ],
     [
       0.0,
@@ -29,7 +30,7 @@
       1.0
     ]
   ],
-  "reconstruction": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper\\reconstruction.ply",
-  "original_obj": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper\\mesh_normalized.obj",
-  "output": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper\\registered_reconstruction.ply"
+  "reconstruction": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\nsdf_surface_refined.ply",
+  "original_obj": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\mesh_normalized.obj",
+  "output": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\registered_reconstruction.ply"
 }

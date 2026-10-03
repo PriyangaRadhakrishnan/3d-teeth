@@ -421,8 +421,12 @@
 
         <!-- Reconstructed 3D Surface Mesh Viewer -->
         <div class="viewer-card">
-          <div class="viewer-tag">
-            <i data-lucide="sparkles" style="color: var(--accent-emerald);"></i> 3D Reconstruction Model
+          <div class="viewer-tag" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <span><i data-lucide="sparkles" style="color: var(--accent-emerald);"></i> 3D Reconstruction Model</span>
+            <div style="display: flex; gap: 6px;">
+              <button id="btnViewCrown" class="badge" style="cursor: pointer; background: rgba(0, 245, 160, 0.2); border: 1px solid var(--accent-emerald); color: var(--accent-emerald); font-size: 0.7rem; padding: 2px 8px;" onclick="switchReconstructionModel('crown')">Crown Mesh</button>
+              <button id="btnViewNsdf" class="badge" style="cursor: pointer; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.7rem; padding: 2px 8px;" onclick="switchReconstructionModel('nsdf')">NSDF Surface</button>
+            </div>
           </div>
           <div id="recCanvas" class="viewer-canvas"></div>
         </div>
@@ -478,9 +482,17 @@
             <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Camera Intrinsics/Extrinsics</div>
           </div>
           <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); font-size: 0.75rem;">
-            <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.2rem;">Stage 4</div>
-            <div style="font-weight: 600;">ControlNet++ Priors</div>
-            <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Initial 3D Geometry</div>
+            <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.2rem;">Stage 4A</div>
+            <div style="font-weight: 600;">ControlNet Extractor</div>
+            <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Multi-Scale Diffusion Residuals</div>
+          </div>
+          <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.4); font-size: 0.75rem;" onclick="scrollToFusionCard()" style="cursor: pointer;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+              <span style="color: var(--accent-cyan); font-weight: 700;">Stage 4B</span>
+              <span style="font-size: 0.6rem; background: rgba(0, 242, 254, 0.25); color: #fff; padding: 1px 4px; border-radius: 4px; font-weight: 700;">Mod 2</span>
+            </div>
+            <div style="font-weight: 600;">Cross-View Fusion</div>
+            <div style="color: var(--accent-cyan); font-size: 0.7rem; margin-top: 0.2rem;">Epipolar Warping & Attention ➔</div>
           </div>
           <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); font-size: 0.75rem;">
             <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.2rem;">Stage 5</div>
@@ -498,19 +510,158 @@
             <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Fine Dental Detail Pyramid</div>
           </div>
           <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 245, 160, 0.05); border: 1px solid rgba(0, 245, 160, 0.2); font-size: 0.75rem;">
-            <div style="color: var(--accent-emerald); font-weight: 700; margin-bottom: 0.2rem;">Stage 8</div>
+            <div style="color: var(--accent-emerald); font-weight: 700; margin-bottom: 0.2rem;">Stage 8A</div>
             <div style="font-weight: 600;">Diffusion Priors</div>
             <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Sparse View Guidance</div>
           </div>
+          <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 245, 160, 0.12); border: 1px solid rgba(0, 245, 160, 0.4); font-size: 0.75rem; cursor: pointer;" onclick="scrollToNsdfCard()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+              <span style="color: var(--accent-emerald); font-weight: 700;">Stage 8B</span>
+              <span style="font-size: 0.6rem; background: rgba(0, 245, 160, 0.25); color: #fff; padding: 1px 4px; border-radius: 4px; font-weight: 700;">Mod 3</span>
+            </div>
+            <div style="font-weight: 600;">NSDF Coordinate Field</div>
+            <div style="color: var(--accent-emerald); font-size: 0.7rem; margin-top: 0.2rem;">Zero-Level Set Mesh ➔</div>
+          </div>
+          <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 245, 160, 0.05); border: 1px solid rgba(0, 245, 160, 0.2); font-size: 0.75rem;">
+            <div style="color: var(--accent-emerald); font-weight: 700; margin-bottom: 0.2rem;">Stage 8C</div>
+            <div style="font-weight: 600;">Curvature Refine</div>
+            <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Bilateral Normal Filter</div>
+          </div>
           <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 245, 160, 0.05); border: 1px solid rgba(0, 245, 160, 0.2); font-size: 0.75rem;">
             <div style="color: var(--accent-emerald); font-weight: 700; margin-bottom: 0.2rem;">Stage 9</div>
-            <div style="font-weight: 600;">ICP Registration</div>
-            <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Reference Model Alignment</div>
+            <div style="font-weight: 600;">Point-to-Plane ICP</div>
+            <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">Normal-Aware Alignment</div>
           </div>
           <div style="padding: 0.75rem; border-radius: 12px; background: rgba(0, 245, 160, 0.05); border: 1px solid rgba(0, 245, 160, 0.2); font-size: 0.75rem;">
             <div style="color: var(--accent-emerald); font-weight: 700; margin-bottom: 0.2rem;">Stage 10</div>
             <div style="font-weight: 600;">Quantitative Metrics</div>
             <div style="color: var(--text-muted); font-size: 0.7rem; margin-top: 0.2rem;">PSNR, SSIM, Chamfer, F1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 4B: Cross-View Feature Fusion Inspection Panel -->
+      <div class="glass-card" id="fusionCard" style="margin-top: 0.5rem; border: 1px solid rgba(0, 242, 254, 0.25);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+          <h4 style="font-size: 0.95rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+            <i data-lucide="share-2" style="color: var(--accent-cyan);"></i> Stage 4B: Cross-View Feature Fusion & Multi-Scale Embeddings
+          </h4>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <span class="badge" style="background: rgba(0, 245, 160, 0.15); color: var(--accent-emerald); border-color: rgba(0, 245, 160, 0.4);">
+              ● Active & Fused (5 Views)
+            </span>
+            <a id="featuresDownloadBtn" href="/api/samples/00OMSZGW_upper/files/features.pt" class="badge" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem;" download>
+              <i data-lucide="download" style="width: 12px;"></i> Download features.pt (95 MB)
+            </a>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+          <div style="padding: 0.85rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">Stage 4A Feature Extractor</div>
+            <div style="font-weight: 700; color: var(--accent-cyan); font-size: 0.85rem;" id="extractorLabel">ControlNet Feature Extractor</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">lllyasviel/control_v11p_sd15_normalbae (361M)</div>
+          </div>
+          <div style="padding: 0.85rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">Stage 4B Fusion Mechanism</div>
+            <div style="font-weight: 700; color: var(--accent-cyan); font-size: 0.85rem;" id="fusionMethodLabel">Geometry-Guided Epipolar Warping & Cross-View Attention</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">Calibrated Intrinsics + Metric Depth Remapping</div>
+          </div>
+          <div style="padding: 0.85rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">Multi-View Geometry Coherence</div>
+            <div style="font-weight: 700; color: var(--accent-emerald); font-size: 0.85rem;">38.1% Mutual Overlap</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">0 NaNs / 0 Infs • Strictly Finite (CPU-safe)</div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 600;">Preserved Multi-Scale Tensor Hierarchy:</div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;">
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.15);">
+            <div style="color: var(--accent-cyan); font-weight: 700;">scale_1_8</div>
+            <div style="color: var(--text-main); margin-top: 2px;">[5, 320, 64, 64]</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Fine Geometry</div>
+          </div>
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.15);">
+            <div style="color: var(--accent-cyan); font-weight: 700;">scale_1_16</div>
+            <div style="color: var(--text-main); margin-top: 2px;">[5, 640, 32, 32]</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Mid Structures</div>
+          </div>
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.15);">
+            <div style="color: var(--accent-cyan); font-weight: 700;">scale_1_32</div>
+            <div style="color: var(--text-main); margin-top: 2px;">[5, 1280, 16, 16]</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Deep Semantics</div>
+          </div>
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.15);">
+            <div style="color: var(--accent-cyan); font-weight: 700;">scale_1_64</div>
+            <div style="color: var(--text-main); margin-top: 2px;">[5, 1280, 8, 8]</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Global Latent</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 8B & 8C: Neural Signed Distance Field (NSDF) & Surface Normal Refinement Inspection Panel (Modification 3) -->
+      <div class="glass-card" id="nsdfCard" style="margin-top: 0.5rem; border: 1px solid rgba(0, 245, 160, 0.35);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+          <h4 style="font-size: 0.95rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+            <i data-lucide="layers" style="color: var(--accent-emerald);"></i> Stage 8B & 8C: Neural Signed Distance Field (NSDF) & Normal Refinement
+          </h4>
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <span class="badge" style="background: rgba(0, 245, 160, 0.15); color: var(--accent-emerald); border-color: rgba(0, 245, 160, 0.4);">
+              ● Active & Reconstructed (Mod 3)
+            </span>
+            <a id="nsdfObjDownloadBtn" href="/api/samples/00OMSZGW_upper/files/nsdf_surface.obj" class="badge" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem;" download>
+              <i data-lucide="download" style="width: 12px;"></i> nsdf_surface.obj
+            </a>
+            <a id="nsdfPlyDownloadBtn" href="/api/samples/00OMSZGW_upper/files/nsdf_surface_refined.ply" class="badge" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem;" download>
+              <i data-lucide="download" style="width: 12px;"></i> nsdf_surface_refined.ply
+            </a>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+          <div style="padding: 0.85rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">NSDF Architecture</div>
+            <div style="font-weight: 700; color: var(--accent-emerald); font-size: 0.85rem;">Fourier MLP Coordinate Field</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">L=6 frequency bands (39 dims), 4x128 hidden, Softplus (&beta;=100)</div>
+          </div>
+          <div style="padding: 0.85rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">Sign Convention & Loss</div>
+            <div style="font-weight: 700; color: var(--accent-emerald); font-size: 0.85rem;">Inside (-) / Surface (0) / Free Space (+)</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">L1 Surface + Smooth L1 Dist + Eikonal (||&nabla;f||&approx;1) + Normal Cosine</div>
+          </div>
+          <div style="padding: 0.85rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">Stage 8C & 9 Refinement</div>
+            <div style="font-weight: 700; color: var(--accent-emerald); font-size: 0.85rem;">Curvature Filter ➔ Point-to-Plane ICP</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem;">Bilateral Normal Smoothing + Tangent Projection Alignment</div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 600;">NSDF Extraction & Registration Metrics:</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;">
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 245, 160, 0.04); border: 1px solid rgba(0, 245, 160, 0.15);">
+            <div style="color: var(--accent-emerald); font-weight: 700;">Surface Vertices</div>
+            <div style="color: var(--text-main); margin-top: 2px;" id="nsdfVerticesLabel">90,963</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Marching Cubes 48&sup3;</div>
+          </div>
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 245, 160, 0.04); border: 1px solid rgba(0, 245, 160, 0.15);">
+            <div style="color: var(--accent-emerald); font-weight: 700;">Surface Faces</div>
+            <div style="color: var(--text-main); margin-top: 2px;" id="nsdfFacesLabel">182,129</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Watertight Topology</div>
+          </div>
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 245, 160, 0.04); border: 1px solid rgba(0, 245, 160, 0.15);">
+            <div style="color: var(--accent-emerald); font-weight: 700;">Eikonal Loss</div>
+            <div style="color: var(--text-main); margin-top: 2px;" id="nsdfEikonalLabel">0.1746</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">||&nabla;f(x)||-1</div>
+          </div>
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 245, 160, 0.04); border: 1px solid rgba(0, 245, 160, 0.15);">
+            <div style="color: var(--accent-emerald); font-weight: 700;">Mean Curvature</div>
+            <div style="color: var(--text-main); margin-top: 2px;" id="curvatureLabel">3.67 mm&oline;&sup1;</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Quadric Paraboloid</div>
+          </div>
+          <div style="padding: 0.6rem; border-radius: 8px; background: rgba(0, 245, 160, 0.04); border: 1px solid rgba(0, 245, 160, 0.15);">
+            <div style="color: var(--accent-emerald); font-weight: 700;">Point-to-Plane RMSE</div>
+            <div style="color: var(--text-main); margin-top: 2px;" id="p2lRmseLabel">0.197 mm</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Tangent Plane ICP</div>
           </div>
         </div>
       </div>
@@ -671,19 +822,58 @@
       lucide.createIcons();
     }
 
+    let currentSampleDetails = null;
+    let currentModelType = 'crown';
+
+    function switchReconstructionModel(type) {
+      currentModelType = type;
+      const btnCrown = document.getElementById('btnViewCrown');
+      const btnNsdf = document.getElementById('btnViewNsdf');
+      if (!btnCrown || !btnNsdf) return;
+
+      if (type === 'crown') {
+        btnCrown.style.background = 'rgba(0, 245, 160, 0.2)';
+        btnCrown.style.borderColor = 'var(--accent-emerald)';
+        btnCrown.style.color = 'var(--accent-emerald)';
+        btnNsdf.style.background = 'rgba(255, 255, 255, 0.05)';
+        btnNsdf.style.borderColor = 'var(--border-color)';
+        btnNsdf.style.color = 'var(--text-muted)';
+        if (currentSampleDetails && currentSampleDetails.files.rec_obj) {
+          loadOBJModel(currentSampleDetails.files.rec_obj, recScene, 0x00f2fe);
+        } else if (currentSampleDetails && currentSampleDetails.files.rec_ply) {
+          loadPLYModel(currentSampleDetails.files.rec_ply, recScene);
+        }
+      } else {
+        btnNsdf.style.background = 'rgba(0, 245, 160, 0.2)';
+        btnNsdf.style.borderColor = 'var(--accent-emerald)';
+        btnNsdf.style.color = 'var(--accent-emerald)';
+        btnCrown.style.background = 'rgba(255, 255, 255, 0.05)';
+        btnCrown.style.borderColor = 'var(--border-color)';
+        btnCrown.style.color = 'var(--text-muted)';
+        if (currentSampleDetails && currentSampleDetails.files.nsdf_surface_obj) {
+          loadOBJModel(currentSampleDetails.files.nsdf_surface_obj, recScene, 0x38ef7d);
+        } else if (currentSampleDetails && currentSampleDetails.files.nsdf_surface_ply) {
+          loadPLYModel(currentSampleDetails.files.nsdf_surface_ply, recScene);
+        }
+      }
+    }
+
     async function selectSample(sampleId) {
       currentSampleId = sampleId;
       loadSamples();
 
       const res = await fetch(`/api/samples/${sampleId}/details`);
       const details = await res.json();
+      currentSampleDetails = details;
 
       // Load 3D Models
       if (details.files.gt_obj) {
         loadOBJModel(details.files.gt_obj, gtScene, 0x94a3b8);
       }
 
-      if (details.files.rec_obj) {
+      if (currentModelType === 'nsdf' && details.files.nsdf_surface_obj) {
+        loadOBJModel(details.files.nsdf_surface_obj, recScene, 0x38ef7d);
+      } else if (details.files.rec_obj) {
         loadOBJModel(details.files.rec_obj, recScene, 0x00f2fe);
       } else if (details.files.rec_ply) {
         loadPLYModel(details.files.rec_ply, recScene);
@@ -697,13 +887,63 @@
       document.getElementById('valF1').innerText = (m.f1_score_0_04 || 0.807).toFixed(3);
       document.getElementById('valPsnr').innerText = `${(m.mean_psnr || 18.58).toFixed(2)} dB`;
 
+      // Update Stage 4B Fusion Card
+      const btn = document.getElementById('featuresDownloadBtn');
+      if (details.files && details.files.features_pt) {
+        btn.href = details.files.features_pt;
+        btn.style.display = 'inline-flex';
+      } else {
+        btn.style.display = 'none';
+      }
+
+      // Update Stage 8B NSDF Card
+      const nsdfObjBtn = document.getElementById('nsdfObjDownloadBtn');
+      if (nsdfObjBtn && details.files && details.files.nsdf_surface_obj) {
+        nsdfObjBtn.href = details.files.nsdf_surface_obj;
+        nsdfObjBtn.style.display = 'inline-flex';
+      }
+      const nsdfPlyBtn = document.getElementById('nsdfPlyDownloadBtn');
+      if (nsdfPlyBtn && details.files && (details.files.nsdf_refined_ply || details.files.nsdf_surface_ply)) {
+        nsdfPlyBtn.href = details.files.nsdf_refined_ply || details.files.nsdf_surface_ply;
+        nsdfPlyBtn.style.display = 'inline-flex';
+      }
+
+      if (m.nsdf_surface_vertices) document.getElementById('nsdfVerticesLabel').innerText = Number(m.nsdf_surface_vertices).toLocaleString();
+      if (m.nsdf_surface_faces) document.getElementById('nsdfFacesLabel').innerText = Number(m.nsdf_surface_faces).toLocaleString();
+      if (m.nsdf_eikonal_loss) document.getElementById('nsdfEikonalLabel').innerText = Number(m.nsdf_eikonal_loss).toFixed(4);
+      if (m.curvature_mean) document.getElementById('curvatureLabel').innerText = `${Number(m.curvature_mean).toFixed(2)} mm⁻¹`;
+      if (m.icp_rmse_mm) document.getElementById('p2lRmseLabel').innerText = `${Number(m.icp_rmse_mm).toFixed(3)} mm`;
 
       // Update Gallery
-      currentSampleDetails = details;
       renderGallery();
     }
 
-    let currentSampleDetails = null;
+    function scrollToFusionCard() {
+      const card = document.getElementById('fusionCard');
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth' });
+        card.style.borderColor = 'rgba(0, 242, 254, 0.8)';
+        card.style.boxShadow = '0 0 30px rgba(0, 242, 254, 0.2)';
+        setTimeout(() => {
+          card.style.borderColor = 'rgba(0, 242, 254, 0.25)';
+          card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4)';
+        }, 1500);
+      }
+    }
+
+    function scrollToNsdfCard() {
+      const card = document.getElementById('nsdfCard');
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth' });
+        card.style.borderColor = 'rgba(0, 245, 160, 0.8)';
+        card.style.boxShadow = '0 0 30px rgba(0, 245, 160, 0.2)';
+        setTimeout(() => {
+          card.style.borderColor = 'rgba(0, 245, 160, 0.35)';
+          card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4)';
+        }, 1500);
+      }
+    }
+
     let currentGalleryTab = 'images';
 
     function switchGalleryTab(tabKey) {

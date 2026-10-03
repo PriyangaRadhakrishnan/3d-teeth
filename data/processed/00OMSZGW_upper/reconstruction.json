@@ -1,4 +1,64 @@
 {
-  "vertices": 512000,
-  "output_ply": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper\\reconstruction.ply"
+  "vertices": 216406,
+  "output_ply": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\reconstruction.ply",
+  "features": {
+    "model_type": "ControlNet Feature Extractor",
+    "checkpoint": "lllyasviel/control_v11p_sd15_normalbae",
+    "fusion_method": "Geometry-Guided Epipolar Warping & Cross-View Attention Fusion v1.0",
+    "features_file": "features.pt",
+    "feature_shapes": {
+      "controlnet_shapes": {
+        "scale_1_8": [
+          5,
+          320,
+          64,
+          64
+        ],
+        "scale_1_16": [
+          5,
+          640,
+          32,
+          32
+        ],
+        "scale_1_32": [
+          5,
+          1280,
+          16,
+          16
+        ],
+        "scale_1_64": [
+          5,
+          1280,
+          8,
+          8
+        ]
+      },
+      "fused_shapes": {
+        "scale_1_8": [
+          5,
+          320,
+          64,
+          64
+        ],
+        "scale_1_16": [
+          5,
+          640,
+          32,
+          32
+        ],
+        "scale_1_32": [
+          5,
+          1280,
+          16,
+          16
+        ],
+        "scale_1_64": [
+          5,
+          1280,
+          8,
+          8
+        ]
+      }
+    }
+  }
 }

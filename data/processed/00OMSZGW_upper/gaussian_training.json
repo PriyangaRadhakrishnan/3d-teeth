@@ -1,9 +1,9 @@
 {
   "mode": "neural-field-gaussian-color-optimization",
-  "device": "cuda",
-  "iterations": 500,
+  "device": "cpu",
+  "iterations": 50,
   "points": 35000,
-  "initial_loss": 0.09734681248664856,
-  "final_loss": 0.08298437297344208,
-  "output": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper\\gaussian_model.pt"
+  "initial_loss": 0.08684409409761429,
+  "final_loss": 0.032215364277362823,
+  "output": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\gaussian_model.pt"
 }

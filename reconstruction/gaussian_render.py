@@ -10,12 +10,12 @@ from PIL import Image, ImageDraw
 from gsplat.rendering import rasterization
 
 
-def render_model(sample_dir: str | Path, device: str = "cuda") -> Path:
+def render_model(sample_dir: str | Path, device: str = None) -> Path:
     sample = Path(sample_dir)
-    checkpoint = torch.load(sample / "gaussian_model.pt", map_location=device, weights_only=False)
+    target_device = torch.device(device if device else ("cuda" if torch.cuda.is_available() else "cpu"))
+    checkpoint = torch.load(sample / "gaussian_model.pt", map_location=target_device, weights_only=False)
     metadata = json.loads((sample / "metadata.json").read_text(encoding="utf-8"))
     cameras = json.loads((sample / metadata["camera_file"]).read_text(encoding="utf-8"))
-    target_device = torch.device(device if torch.cuda.is_available() else "cpu")
     means = checkpoint["means"].to(target_device)
     colors = checkpoint["colors"].to(target_device)
     scales = checkpoint["scales"].to(target_device)

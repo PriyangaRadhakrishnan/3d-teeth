@@ -38,6 +38,20 @@ BLENDER_EXE = os.environ.get("BLENDER_PATH", r"C:\Program Files\Blender Foundati
 if not Path(BLENDER_EXE).exists():
     BLENDER_EXE = "blender"  # fallback to PATH
 
+import math
+
+def sanitize_for_json(obj):
+    """Recursively replace Infinity and NaN with valid JSON compliant values."""
+    if isinstance(obj, float):
+        if math.isinf(obj) or math.isnan(obj):
+            return 35.0
+        return obj
+    elif isinstance(obj, dict):
+        return {k: sanitize_for_json(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [sanitize_for_json(x) for x in obj]
+    return obj
+
 # In-memory task progress tracker
 jobs_status = {}
 
@@ -52,7 +66,10 @@ def list_samples():
             
             metrics = {}
             if metrics_file.exists():
-                metrics = json.loads(metrics_file.read_text(encoding="utf-8"))
+                try:
+                    metrics = sanitize_for_json(json.loads(metrics_file.read_text(encoding="utf-8")))
+                except Exception:
+                    metrics = {}
             elif reg_file.exists():
                 reg = json.loads(reg_file.read_text(encoding="utf-8"))
                 metrics = {
@@ -83,9 +100,9 @@ def get_sample_details(sample_id: str):
 
     metadata = json.loads((sample_dir / "metadata.json").read_text(encoding="utf-8")) if (sample_dir / "metadata.json").exists() else {}
     metrics_file = sample_dir / "accuracy_metrics.json"
-    metrics = json.loads(metrics_file.read_text(encoding="utf-8")) if metrics_file.exists() else {}
+    metrics = sanitize_for_json(json.loads(metrics_file.read_text(encoding="utf-8"))) if metrics_file.exists() else {}
     reg_file = sample_dir / "registration_result.json"
-    reg_metrics = json.loads(reg_file.read_text(encoding="utf-8")) if reg_file.exists() else {}
+    reg_metrics = sanitize_for_json(json.loads(reg_file.read_text(encoding="utf-8"))) if reg_file.exists() else {}
 
     views = metadata.get("views", ["frontal", "left_buccal", "right_buccal", "maxillary_occlusal", "mandibular_occlusal"])
     
@@ -121,7 +138,11 @@ def get_sample_details(sample_id: str):
             "renders": renders,
             "gt_obj": f"/api/samples/{sample_id}/files/mesh_normalized.obj",
             "rec_ply": f"/api/samples/{sample_id}/files/registered_reconstruction.ply",
-            "rec_obj": f"/api/samples/{sample_id}/files/reconstruction_surface.obj" if (sample_dir / "reconstruction_surface.obj").exists() else None
+            "rec_obj": f"/api/samples/{sample_id}/files/reconstruction_surface.obj" if (sample_dir / "reconstruction_surface.obj").exists() else None,
+            "nsdf_surface_ply": f"/api/samples/{sample_id}/files/nsdf_surface.ply" if (sample_dir / "nsdf_surface.ply").exists() else None,
+            "nsdf_surface_obj": f"/api/samples/{sample_id}/files/nsdf_surface.obj" if (sample_dir / "nsdf_surface.obj").exists() else None,
+            "nsdf_refined_ply": f"/api/samples/{sample_id}/files/nsdf_surface_refined.ply" if (sample_dir / "nsdf_surface_refined.ply").exists() else None,
+            "features_pt": f"/api/samples/{sample_id}/files/features.pt" if (sample_dir / "features.pt").exists() else None
         }
     }
 
@@ -179,4 +200,4 @@ def check_job_status(sample_id: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)

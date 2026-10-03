@@ -9,4 +9,9 @@ python-multipart>=0.0.9
 # Phase 1: SAM-based segmentation dependencies
 torch
 segment-anything @ git+https://github.com/facebookresearch/segment-anything.git
+# Stage 4: ControlNet feature extraction dependencies
+diffusers>=0.29.0
+transformers>=4.40.0
+accelerate>=0.30.0
+safetensors>=0.4.0
 # Blender 4.x is installed separately and is not a pip dependency.

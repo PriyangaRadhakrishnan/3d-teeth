@@ -1,5 +1,5 @@
 {
-  "source_obj": "D:\\3d_dental\\data\\processed\\00OMSZGW_upper\\mesh_normalized.obj",
+  "source_obj": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\mesh_normalized.obj",
   "original_center": [
     0.0,
     0.0,
@@ -31,13 +31,13 @@
   "normalized_bounds": [
     [
       -1.0,
-      -0.99123308,
-      -0.77504672
+      -0.4881721,
+      -0.19147246
     ],
     [
       1.0,
-      0.99123308,
-      0.77504672
+      0.4881721,
+      0.19147246
     ]
   ],
   "working_extent": 2.0,
