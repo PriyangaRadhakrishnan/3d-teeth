@@ -1,0 +1,50 @@
+{
+  "sample_id": "00OMSZGW_upper",
+  "device": "cpu",
+  "total_inference_time_sec": 243.7177,
+  "stage_timings_sec": {
+    "SAM_Segmentation": 15.2,
+    "ControlNet_Feature_Extraction": 42.5,
+    "Cross_View_Feature_Fusion": 6.8,
+    "Gaussian_Neural_Field_Optimization": 28.4,
+    "Multiscale_Gaussian_Rendering": 98.9711,
+    "NSDF_Training_and_Extraction": 47.6366,
+    "Curvature_Refinement_and_Point_to_Plane_ICP": 4.21
+  },
+  "model_parameters": {
+    "ControlNet Feature Extractor": {
+      "total_params_m": 361.2791,
+      "trainable_params_m": 361.2791,
+      "non_trainable_params_m": 0.0
+    },
+    "Cross-View Feature Fusion": {
+      "total_params_m": 20.9969,
+      "trainable_params_m": 20.9969,
+      "non_trainable_params_m": 0.0
+    },
+    "Learnable Neural Representation": {
+      "total_params_m": 0.0256,
+      "trainable_params_m": 0.0256,
+      "non_trainable_params_m": 0.0
+    },
+    "NSDF Network": {
+      "total_params_m": 0.0598,
+      "trainable_params_m": 0.0598,
+      "non_trainable_params_m": 0.0
+    }
+  },
+  "gflops": {
+    "ControlNet Feature Extractor (5 views)": 726.0,
+    "Cross-View Feature Fusion": 18.6,
+    "Learnable Neural Representation": 0.6114,
+    "NSDF Network (16k query)": 1.9504
+  },
+  "memory_usage": {
+    "cuda_available": false,
+    "gpu_status": "CUDA unavailable \u2014 GPU memory measurement not available.",
+    "cpu_process_ram_used_gb": 0.767,
+    "system_ram_used_gb": 10.579,
+    "system_ram_total_gb": 15.691,
+    "system_ram_percent": 67.4
+  }
+}

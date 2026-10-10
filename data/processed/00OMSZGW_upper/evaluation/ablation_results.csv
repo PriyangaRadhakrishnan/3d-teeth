@@ -1,0 +1,7 @@
+Config,Name,File,MAE (mm),RMSE (mm),CD Total (mm),P95 (mm),Norm Cosine,Norm Deg,Hausdorff (mm)
+A,Baseline (Depth Fusion),reconstruction.ply,0.4818,0.6070,0.5977,1.3266,0.17619262460645121,78.99635549366063,1.9861
+B,Baseline + SAM,reconstruction.ply,0.4811,0.6070,0.5971,1.3162,0.17869486931880663,78.83001809362433,1.9864
+C,Baseline + SAM + ControlNet,reconstruction.ply,0.4820,0.6093,0.5978,1.3372,0.17459162616279572,79.11692026294676,1.9864
+D,Baseline + SAM + ControlNet + Cross-View Fusion,reconstruction.ply,0.4829,0.6085,0.5989,1.3334,0.1757419956359718,79.04973200964838,1.9864
+E,Baseline + SAM + ControlNet + Cross-View Fusion + NSDF,nsdf_surface.ply,1.6134,1.7473,1.6872,2.7042,0.005576857004446174,89.65992298753255,3.7101
+F,Final Refined System,registered_reconstruction.ply,0.3170,0.3844,0.3434,0.7218,-0.0069135699168758865,90.45136556160558,1.0057

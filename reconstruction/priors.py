@@ -89,7 +89,7 @@ class ControlNetFeatureExtractor(torch.nn.Module):
         tensor = torch.from_numpy(np.array(img_resized, dtype=np.float32) / 255.0).permute(2, 0, 1)  # (3, H, W)
         return tensor
 
-    @torch.no_grad()
+    @torch.inference_mode()
     def extract_features(
         self,
         views_dict: Dict[str, Union[np.ndarray, Image.Image, Path, str]],
@@ -176,6 +176,11 @@ class ControlNetFeatureExtractor(torch.nn.Module):
             "scale_1_64": mid_block_tensor,       # Shape: [V, 1280, 8, 8]
         }
 
+        # Validate numerical integrity: finite, no NaN, no Inf
+        for sname, stensor in multiscale.items():
+            if not torch.isfinite(stensor).all():
+                raise ValueError(f"ControlNet feature map '{sname}' contains non-finite (NaN or Inf) values.")
+
         shapes_summary = {
             name: list(t.shape) for name, t in multiscale.items()
         }
@@ -187,12 +192,37 @@ class ControlNetFeatureExtractor(torch.nn.Module):
         return {
             "model_type": self.model_label,
             "checkpoint": self.checkpoint,
+            "device": str(self.device),
             "views": view_names,
+            "preprocessing": {
+                "target_size": list(target_size),
+                "masked_by_sam": masks_dict is not None,
+                "input_normalization": "[0.0, 1.0]"
+            },
             "down_block_res_samples": down_block_tensors,
             "mid_block_res_sample": mid_block_tensor,
             "multiscale_features": multiscale,
             "feature_shapes": shapes_summary
         }
+
+
+def save_controlnet_features(extracted_data: Dict[str, Any], output_path: Union[str, Path]) -> Path:
+    """
+    Saves extracted multi-scale ControlNet features to features.pt with full metadata.
+    """
+    out_p = Path(output_path).resolve()
+    out_p.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "model_type": extracted_data["model_type"],
+        "checkpoint": extracted_data["checkpoint"],
+        "device": extracted_data.get("device", "cpu"),
+        "views": extracted_data["views"],
+        "feature_shapes": extracted_data["feature_shapes"],
+        "preprocessing": extracted_data.get("preprocessing", {}),
+        "multiscale_features": extracted_data["multiscale_features"]
+    }
+    torch.save(payload, out_p)
+    return out_p
 
 
 # Backward-compatibility alias

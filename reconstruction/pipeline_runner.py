@@ -44,7 +44,8 @@ def run_end_to_end_pipeline(
     output_root: str | Path = "data/processed",
     blender_path: str = "blender",
     iterations: int = 500,
-    max_points: int = 35000
+    max_points: int = 35000,
+    skip_nsdf: bool = False
 ) -> dict:
     """
     Complete automated end-to-end pipeline:
@@ -198,28 +199,34 @@ def run_end_to_end_pipeline(
     log("Stage 5: Learnable Neural Representation (MLP Crown Encoding)...")
     log("Stage 6: 3D Gaussian Neural Fields Primitive Optimization...")
     log("Stage 7: Multiscale Gaussian Rendering...")
-    log("Stage 8: Diffusion Priors Sparse View Guidance...")
     from reconstruction.gaussian_train import train as train_gs
     device = "cuda" if torch.cuda.is_available() else "cpu"
     train_res = train_gs(sample_dir, iterations=iterations, max_points=max_points, device=device)
 
-    from scripts.render_gaussian import render_gaussian
-    render_gaussian(sample_dir, device=device)
+    from reconstruction.gaussian_render import render_model_multiscale
+    multiscale_res = render_model_multiscale(sample_dir, device=device)
 
-    log("Stage 8B: Neural Signed Distance Field (NSDF) Coordinate Representation & Surface Extraction...")
-    from reconstruction.nsdf import train_and_extract_nsdf
-    nsdf_iters = min(iterations, 60) if iterations > 0 else 60
-    nsdf_res = train_and_extract_nsdf(
-        sample_dir=sample_dir,
-        device=device,
-        iterations=nsdf_iters,
-        resolution=48
-    )
+    refinement_input_ply = None
+    if not skip_nsdf:
+        log("Stage 8B: Neural Signed Distance Field (NSDF) Coordinate Representation & Surface Extraction...")
+        from reconstruction.nsdf import train_and_extract_nsdf
+        nsdf_iters = min(iterations, 60) if iterations > 0 else 60
+        nsdf_res = train_and_extract_nsdf(
+            sample_dir=sample_dir,
+            device=device,
+            iterations=nsdf_iters,
+            resolution=48
+        )
+        refinement_input_ply = sample_dir / "nsdf_surface.ply"
+    else:
+        log("Stage 8B [Ablation]: Skipping NSDF - feeding raw depth-fusion reconstruction directly...")
+        nsdf_res = {"status": "skipped_for_ablation"}
+        refinement_input_ply = sample_dir / "reconstruction.ply"
 
     log("Stage 8C: Curvature-Guided Normal Refinement...")
     from reconstruction.surface_refinement import refine_surface_normals_and_curvature
     refinement_res = refine_surface_normals_and_curvature(
-        mesh_path=sample_dir / "nsdf_surface.ply",
+        mesh_path=refinement_input_ply,
         output_ply=sample_dir / "nsdf_surface_refined.ply",
         output_obj=sample_dir / "nsdf_surface_refined.obj"
     )
@@ -247,7 +254,13 @@ def run_end_to_end_pipeline(
     rec_obj_path = sample_dir / "reconstruction_surface.obj"
     o3d.io.write_triangle_mesh(str(rec_obj_path), poisson_mesh)
 
-    log("Stage 10: Quantitative Evaluation (PSNR, SSIM, LPIPS, Chamfer Distance, F1-Score)...")
+    log("Stage 10: Dedicated Evaluation & Metrics Suite (MAE, RMSE, Chamfer, ALE, P95, Normal Consistency, Hausdorff)...")
+    from evaluation.evaluate_reconstruction import evaluate_sample_reconstruction
+    eval_report = evaluate_sample_reconstruction(
+        sample_dir=sample_dir,
+        reconstructed_model_path=sample_dir / "registered_reconstruction.ply",
+        reference_model_path=norm_obj_path
+    )
     psnr_vals, ssim_vals = [], []
     images_dir = sample_dir / "images"
     renders_dir = sample_dir / "gaussian_renders"
@@ -380,11 +393,13 @@ if __name__ == "__main__":
     parser.add_argument("--sample-id", default="uploaded_sample")
     parser.add_argument("--output-root", default="data/processed")
     parser.add_argument("--iterations", type=int, default=50)
+    parser.add_argument("--skip-nsdf", action="store_true", help="Ablation: skip NSDF coordinate representation")
     args = parser.parse_args()
     res = run_end_to_end_pipeline(
         raw_obj_path=args.raw_obj,
         sample_id=args.sample_id,
         output_root=args.output_root,
-        iterations=args.iterations
+        iterations=args.iterations,
+        skip_nsdf=args.skip_nsdf
     )
     print(json.dumps(res["metrics"], indent=2))

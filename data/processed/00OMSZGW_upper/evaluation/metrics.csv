@@ -1,0 +1,11 @@
+Metric,Value,Unit,Interpretation
+MAE,0.3167,mm,Mean Absolute Surface Error
+RMSE,0.3843,mm,Root Mean Square Surface Error
+Chamfer_Forward,0.3167,mm,Pred -> Ref Distance
+Chamfer_Backward,0.0475,mm,Ref -> Pred Distance
+Chamfer_Total,0.3642,mm,Bidirectional Sum
+P95,0.7225,mm,95th Percentile Error
+ALE,0.0362,mm,Anatomical Landmark Error (curvature_occlusal_crest_extrema)
+Normal_Cosine_Similarity,-0.0084,"[-1, 1]",Surface Normal Alignment
+Normal_Angular_Error,90.59,degrees,Mean Angular Normal Deviation
+Hausdorff,1.0025,mm,Worst-case Surface Distance

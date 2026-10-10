@@ -1,0 +1,40 @@
+{
+  "sample_id": "00OMSZGW_upper",
+  "status": "evaluated_against_ground_truth",
+  "reconstructed_model": "registered_reconstruction.ply",
+  "reference_model": "mesh_normalized.obj",
+  "evaluation_points_count": 5000,
+  "metrics": {
+    "mae_mm": 0.316696541462255,
+    "rmse_mm": 0.38425648116794325,
+    "chamfer_distance_mm": {
+      "forward": 0.316696541462255,
+      "backward": 0.047456039387605634,
+      "total": 0.36415258084986063,
+      "mean": 0.18207629042493031
+    },
+    "ale": {
+      "ale_mm": 0.03615036674605167,
+      "landmark_count": 17,
+      "method": "curvature_occlusal_crest_extrema",
+      "note": "Computed over occlusal cusp and ridge salience vertices. Full clinical landmark ALE requires manual annotation."
+    },
+    "p95_mm": 0.7225350103549728,
+    "normal_consistency": {
+      "mean_cosine_similarity": -0.008437927081998382,
+      "mean_angular_error_deg": 90.58710184241897,
+      "median_angular_error_deg": 90.90434464313526
+    },
+    "hausdorff_distance_mm": {
+      "hausdorff_mm": 1.002527193922031,
+      "forward_hausdorff_mm": 1.002527193922031,
+      "backward_hausdorff_mm": 0.17179040685695507,
+      "percentile": 100.0,
+      "sensitivity_explanation": "Hausdorff distance captures extreme worst-case deviations but is sensitive to isolated boundary points; interpret in conjunction with MAE and P95."
+    },
+    "sample_points_count": {
+      "prediction": 5000,
+      "reference": 5000
+    }
+  }
+}

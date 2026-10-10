@@ -104,6 +104,11 @@ def get_sample_details(sample_id: str):
     reg_file = sample_dir / "registration_result.json"
     reg_metrics = sanitize_for_json(json.loads(reg_file.read_text(encoding="utf-8"))) if reg_file.exists() else {}
 
+    eval_dir = sample_dir / "evaluation"
+    eval_metrics = sanitize_for_json(json.loads((eval_dir / "metrics.json").read_text(encoding="utf-8"))) if (eval_dir / "metrics.json").exists() else {}
+    ablation_data = sanitize_for_json(json.loads((eval_dir / "ablation_results.json").read_text(encoding="utf-8"))) if (eval_dir / "ablation_results.json").exists() else {}
+    profiling_data = sanitize_for_json(json.loads((eval_dir / "profiling.json").read_text(encoding="utf-8"))) if (eval_dir / "profiling.json").exists() else {}
+
     views = metadata.get("views", ["frontal", "left_buccal", "right_buccal", "maxillary_occlusal", "mandibular_occlusal"])
     
     images = {v: f"/api/samples/{sample_id}/files/images/{v}.png" for v in views if (sample_dir / "images" / f"{v}.png").exists()}
@@ -126,7 +131,11 @@ def get_sample_details(sample_id: str):
             "mean_psnr": 18.58,
             "mean_ssim": 0.827
         },
-
+        "evaluation": {
+            "metrics": eval_metrics,
+            "ablation": ablation_data,
+            "profiling": profiling_data
+        },
         "views": views,
         "files": {
             "images": images,
@@ -142,9 +151,30 @@ def get_sample_details(sample_id: str):
             "nsdf_surface_ply": f"/api/samples/{sample_id}/files/nsdf_surface.ply" if (sample_dir / "nsdf_surface.ply").exists() else None,
             "nsdf_surface_obj": f"/api/samples/{sample_id}/files/nsdf_surface.obj" if (sample_dir / "nsdf_surface.obj").exists() else None,
             "nsdf_refined_ply": f"/api/samples/{sample_id}/files/nsdf_surface_refined.ply" if (sample_dir / "nsdf_surface_refined.ply").exists() else None,
-            "features_pt": f"/api/samples/{sample_id}/files/features.pt" if (sample_dir / "features.pt").exists() else None
+            "features_pt": f"/api/samples/{sample_id}/files/features.pt" if (sample_dir / "features.pt").exists() else None,
+            "eval_metrics_json": f"/api/samples/{sample_id}/files/evaluation/metrics.json" if (eval_dir / "metrics.json").exists() else None,
+            "eval_metrics_csv": f"/api/samples/{sample_id}/files/evaluation/metrics.csv" if (eval_dir / "metrics.csv").exists() else None,
+            "ablation_json": f"/api/samples/{sample_id}/files/evaluation/ablation_results.json" if (eval_dir / "ablation_results.json").exists() else None,
+            "ablation_csv": f"/api/samples/{sample_id}/files/evaluation/ablation_results.csv" if (eval_dir / "ablation_results.csv").exists() else None,
+            "profiling_json": f"/api/samples/{sample_id}/files/evaluation/profiling.json" if (eval_dir / "profiling.json").exists() else None,
+            "profiling_csv": f"/api/samples/{sample_id}/files/evaluation/profiling.csv" if (eval_dir / "profiling.csv").exists() else None
         }
     }
+
+@app.get("/api/samples/{sample_id}/evaluation")
+def get_sample_evaluation(sample_id: str):
+    """Retrieve full evaluation metrics, ablation comparisons, and profiling."""
+    sample_dir = PROCESSED_DIR / sample_id
+    eval_dir = sample_dir / "evaluation"
+    if not sample_dir.exists():
+        raise HTTPException(status_code=404, detail="Sample not found")
+
+    return {
+        "metrics": sanitize_for_json(json.loads((eval_dir / "metrics.json").read_text(encoding="utf-8"))) if (eval_dir / "metrics.json").exists() else None,
+        "ablation": sanitize_for_json(json.loads((eval_dir / "ablation_results.json").read_text(encoding="utf-8"))) if (eval_dir / "ablation_results.json").exists() else None,
+        "profiling": sanitize_for_json(json.loads((eval_dir / "profiling.json").read_text(encoding="utf-8"))) if (eval_dir / "profiling.json").exists() else None
+    }
+
 
 @app.get("/api/samples/{sample_id}/files/{file_path:path}")
 def serve_sample_file(sample_id: str, file_path: str):

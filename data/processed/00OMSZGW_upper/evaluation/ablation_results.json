@@ -1,0 +1,234 @@
+{
+  "sample_id": "00OMSZGW_upper",
+  "reference_model": "mesh_normalized.obj",
+  "configurations": {
+    "A": {
+      "name": "Baseline (Depth Fusion)",
+      "description": "Controlled depth fusion baseline without SAM or neural priors",
+      "evaluated_file": "reconstruction.ply",
+      "metrics": {
+        "mae_mm": 0.4818468233069054,
+        "rmse_mm": 0.6069521755330288,
+        "chamfer_distance_mm": {
+          "forward": 0.4818468233069054,
+          "backward": 0.1158533679361898,
+          "total": 0.5977001912430953,
+          "mean": 0.29885009562154763
+        },
+        "ale": {
+          "ale_mm": 0.11334461098747817,
+          "landmark_count": 17,
+          "method": "curvature_occlusal_crest_extrema",
+          "note": "Computed over occlusal cusp and ridge salience vertices. Full clinical landmark ALE requires manual annotation."
+        },
+        "p95_mm": 1.3266305247358874,
+        "normal_consistency": {
+          "mean_cosine_similarity": 0.17619262460645121,
+          "mean_angular_error_deg": 78.99635549366063,
+          "median_angular_error_deg": 74.63644091381508
+        },
+        "hausdorff_distance_mm": {
+          "hausdorff_mm": 1.9861210018563027,
+          "forward_hausdorff_mm": 1.9861210018563027,
+          "backward_hausdorff_mm": 0.3874189280805583,
+          "percentile": 100.0,
+          "sensitivity_explanation": "Hausdorff distance captures extreme worst-case deviations but is sensitive to isolated boundary points; interpret in conjunction with MAE and P95."
+        },
+        "sample_points_count": {
+          "prediction": 50000,
+          "reference": 50000
+        }
+      }
+    },
+    "B": {
+      "name": "Baseline + SAM",
+      "description": "Depth fusion with authentic SAM dental crown segmentation masks",
+      "evaluated_file": "reconstruction.ply",
+      "metrics": {
+        "mae_mm": 0.48109655414116176,
+        "rmse_mm": 0.6070465489134883,
+        "chamfer_distance_mm": {
+          "forward": 0.48109655414116176,
+          "backward": 0.11599095689982601,
+          "total": 0.5970875110409878,
+          "mean": 0.2985437555204939
+        },
+        "ale": {
+          "ale_mm": 0.11316552470439131,
+          "landmark_count": 17,
+          "method": "curvature_occlusal_crest_extrema",
+          "note": "Computed over occlusal cusp and ridge salience vertices. Full clinical landmark ALE requires manual annotation."
+        },
+        "p95_mm": 1.3161920053649756,
+        "normal_consistency": {
+          "mean_cosine_similarity": 0.17869486931880663,
+          "mean_angular_error_deg": 78.83001809362433,
+          "median_angular_error_deg": 74.46834937197745
+        },
+        "hausdorff_distance_mm": {
+          "hausdorff_mm": 1.9863745232194279,
+          "forward_hausdorff_mm": 1.9863745232194279,
+          "backward_hausdorff_mm": 0.38892368059905136,
+          "percentile": 100.0,
+          "sensitivity_explanation": "Hausdorff distance captures extreme worst-case deviations but is sensitive to isolated boundary points; interpret in conjunction with MAE and P95."
+        },
+        "sample_points_count": {
+          "prediction": 50000,
+          "reference": 50000
+        }
+      }
+    },
+    "C": {
+      "name": "Baseline + SAM + ControlNet",
+      "description": "SAM masked views guided by ControlNet multi-scale diffusion feature priors",
+      "evaluated_file": "reconstruction.ply",
+      "metrics": {
+        "mae_mm": 0.4819545396199855,
+        "rmse_mm": 0.6092686880352213,
+        "chamfer_distance_mm": {
+          "forward": 0.4819545396199855,
+          "backward": 0.11589239060924292,
+          "total": 0.5978469302292284,
+          "mean": 0.2989234651146142
+        },
+        "ale": {
+          "ale_mm": 0.11299760856324166,
+          "landmark_count": 17,
+          "method": "curvature_occlusal_crest_extrema",
+          "note": "Computed over occlusal cusp and ridge salience vertices. Full clinical landmark ALE requires manual annotation."
+        },
+        "p95_mm": 1.3372477271634169,
+        "normal_consistency": {
+          "mean_cosine_similarity": 0.17459162616279572,
+          "mean_angular_error_deg": 79.11692026294676,
+          "median_angular_error_deg": 74.70717496804555
+        },
+        "hausdorff_distance_mm": {
+          "hausdorff_mm": 1.9864410339986929,
+          "forward_hausdorff_mm": 1.9864410339986929,
+          "backward_hausdorff_mm": 0.38892368059905136,
+          "percentile": 100.0,
+          "sensitivity_explanation": "Hausdorff distance captures extreme worst-case deviations but is sensitive to isolated boundary points; interpret in conjunction with MAE and P95."
+        },
+        "sample_points_count": {
+          "prediction": 50000,
+          "reference": 50000
+        }
+      }
+    },
+    "D": {
+      "name": "Baseline + SAM + ControlNet + Cross-View Fusion",
+      "description": "Multi-view geometric epipolar warping and attention feature fusion (Mentor Mod #2)",
+      "evaluated_file": "reconstruction.ply",
+      "metrics": {
+        "mae_mm": 0.4829245535428469,
+        "rmse_mm": 0.6085078698572709,
+        "chamfer_distance_mm": {
+          "forward": 0.4829245535428469,
+          "backward": 0.11594089466094572,
+          "total": 0.5988654482037926,
+          "mean": 0.2994327241018963
+        },
+        "ale": {
+          "ale_mm": 0.11348185539801174,
+          "landmark_count": 17,
+          "method": "curvature_occlusal_crest_extrema",
+          "note": "Computed over occlusal cusp and ridge salience vertices. Full clinical landmark ALE requires manual annotation."
+        },
+        "p95_mm": 1.333404471244312,
+        "normal_consistency": {
+          "mean_cosine_similarity": 0.1757419956359718,
+          "mean_angular_error_deg": 79.04973200964838,
+          "median_angular_error_deg": 74.70713389919129
+        },
+        "hausdorff_distance_mm": {
+          "hausdorff_mm": 1.9864097506282101,
+          "forward_hausdorff_mm": 1.9864097506282101,
+          "backward_hausdorff_mm": 0.38746255573651556,
+          "percentile": 100.0,
+          "sensitivity_explanation": "Hausdorff distance captures extreme worst-case deviations but is sensitive to isolated boundary points; interpret in conjunction with MAE and P95."
+        },
+        "sample_points_count": {
+          "prediction": 50000,
+          "reference": 50000
+        }
+      }
+    },
+    "E": {
+      "name": "Baseline + SAM + ControlNet + Cross-View Fusion + NSDF",
+      "description": "Continuous Neural Signed Distance Field coordinate representation (Mentor Mod #3)",
+      "evaluated_file": "nsdf_surface.ply",
+      "metrics": {
+        "mae_mm": 1.6134042667757842,
+        "rmse_mm": 1.7472941162587237,
+        "chamfer_distance_mm": {
+          "forward": 1.6134042667757842,
+          "backward": 0.07383740376236843,
+          "total": 1.6872416705381525,
+          "mean": 0.8436208352690763
+        },
+        "ale": {
+          "ale_mm": 0.05385677534224074,
+          "landmark_count": 17,
+          "method": "curvature_occlusal_crest_extrema",
+          "note": "Computed over occlusal cusp and ridge salience vertices. Full clinical landmark ALE requires manual annotation."
+        },
+        "p95_mm": 2.704216733009919,
+        "normal_consistency": {
+          "mean_cosine_similarity": 0.005576857004446174,
+          "mean_angular_error_deg": 89.65992298753255,
+          "median_angular_error_deg": 89.54587763060744
+        },
+        "hausdorff_distance_mm": {
+          "hausdorff_mm": 3.710136142929052,
+          "forward_hausdorff_mm": 3.710136142929052,
+          "backward_hausdorff_mm": 0.18100687946290314,
+          "percentile": 100.0,
+          "sensitivity_explanation": "Hausdorff distance captures extreme worst-case deviations but is sensitive to isolated boundary points; interpret in conjunction with MAE and P95."
+        },
+        "sample_points_count": {
+          "prediction": 50000,
+          "reference": 50000
+        }
+      }
+    },
+    "F": {
+      "name": "Final Refined System",
+      "description": "Full end-to-end pipeline with Curvature/Normal Refinement and Point-to-Plane ICP",
+      "evaluated_file": "registered_reconstruction.ply",
+      "metrics": {
+        "mae_mm": 0.3169792898784734,
+        "rmse_mm": 0.3844343091057773,
+        "chamfer_distance_mm": {
+          "forward": 0.3169792898784734,
+          "backward": 0.026453732367291514,
+          "total": 0.34343302224576494,
+          "mean": 0.17171651112288247
+        },
+        "ale": {
+          "ale_mm": 0.024657335201124637,
+          "landmark_count": 17,
+          "method": "curvature_occlusal_crest_extrema",
+          "note": "Computed over occlusal cusp and ridge salience vertices. Full clinical landmark ALE requires manual annotation."
+        },
+        "p95_mm": 0.7218369674913729,
+        "normal_consistency": {
+          "mean_cosine_similarity": -0.0069135699168758865,
+          "mean_angular_error_deg": 90.45136556160558,
+          "median_angular_error_deg": 90.42909255364721
+        },
+        "hausdorff_distance_mm": {
+          "hausdorff_mm": 1.0056918353541464,
+          "forward_hausdorff_mm": 1.0056918353541464,
+          "backward_hausdorff_mm": 0.15755318052566825,
+          "percentile": 100.0,
+          "sensitivity_explanation": "Hausdorff distance captures extreme worst-case deviations but is sensitive to isolated boundary points; interpret in conjunction with MAE and P95."
+        },
+        "sample_points_count": {
+          "prediction": 50000,
+          "reference": 50000
+        }
+      }
+    }
+  }
+}

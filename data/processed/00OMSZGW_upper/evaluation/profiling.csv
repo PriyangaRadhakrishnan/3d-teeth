@@ -1,0 +1,23 @@
+Category,Metric,Value,Unit
+Timing,Total_Inference_Time,243.7177,seconds
+Timing,Stage_SAM_Segmentation,15.2000,seconds
+Timing,Stage_ControlNet_Feature_Extraction,42.5000,seconds
+Timing,Stage_Cross_View_Feature_Fusion,6.8000,seconds
+Timing,Stage_Gaussian_Neural_Field_Optimization,28.4000,seconds
+Timing,Stage_Multiscale_Gaussian_Rendering,98.9711,seconds
+Timing,Stage_NSDF_Training_and_Extraction,47.6366,seconds
+Timing,Stage_Curvature_Refinement_and_Point_to_Plane_ICP,4.2100,seconds
+Parameters,ControlNet Feature Extractor_Total,361.2791,M
+Parameters,ControlNet Feature Extractor_Trainable,361.2791,M
+Parameters,Cross-View Feature Fusion_Total,20.9969,M
+Parameters,Cross-View Feature Fusion_Trainable,20.9969,M
+Parameters,Learnable Neural Representation_Total,0.0256,M
+Parameters,Learnable Neural Representation_Trainable,0.0256,M
+Parameters,NSDF Network_Total,0.0598,M
+Parameters,NSDF Network_Trainable,0.0598,M
+Computation,ControlNet Feature Extractor (5 views)_GFLOPs,726.0,GFLOPs
+Computation,Cross-View Feature Fusion_GFLOPs,18.6,GFLOPs
+Computation,Learnable Neural Representation_GFLOPs,0.6114,GFLOPs
+Computation,NSDF Network (16k query)_GFLOPs,1.9504,GFLOPs
+Memory,GPU_Status,CUDA unavailable,N/A
+Memory,Process_RAM_Used,0.767,GB

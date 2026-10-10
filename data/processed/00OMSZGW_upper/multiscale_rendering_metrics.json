@@ -1,0 +1,58 @@
+{
+  "sample_id": "00OMSZGW_upper",
+  "device": "cpu",
+  "backend": "CPU Projective Splatting",
+  "num_gaussians": 2000,
+  "rendering_resolutions": [
+    [
+      320,
+      320
+    ],
+    [
+      160,
+      160
+    ]
+  ],
+  "total_rendering_time_sec": 2.8211,
+  "rendering_timings_per_scale": {
+    "320x320": 1.385,
+    "160x160": 1.2897
+  },
+  "memory_usage": {
+    "cpu_ram_used_gb": 1.023,
+    "system_ram_used_gb": 9.926,
+    "cuda_memory": "CUDA unavailable"
+  },
+  "scales": {
+    "320x320": {
+      "resolution": [
+        320,
+        320
+      ],
+      "rendering_time_sec": 1.385,
+      "views_rendered": [
+        "frontal",
+        "left_buccal",
+        "right_buccal",
+        "maxillary_occlusal",
+        "mandibular_occlusal"
+      ],
+      "output_directory": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\multiscale\\scale_320x320"
+    },
+    "160x160": {
+      "resolution": [
+        160,
+        160
+      ],
+      "rendering_time_sec": 1.2897,
+      "views_rendered": [
+        "frontal",
+        "left_buccal",
+        "right_buccal",
+        "maxillary_occlusal",
+        "mandibular_occlusal"
+      ],
+      "output_directory": "C:\\Users\\Dell\\OneDrive\\Desktop\\3d_dental\\3d_dental\\data\\processed\\00OMSZGW_upper\\multiscale\\scale_160x160"
+    }
+  }
+}

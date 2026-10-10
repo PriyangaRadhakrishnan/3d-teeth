@@ -8,11 +8,11 @@
   "nsdf_training": {
     "model_file": "nsdf_model.pth",
     "iterations": 50,
-    "initial_loss": 0.8233201503753662,
-    "final_loss": 0.4086795449256897,
-    "final_eikonal_loss": 0.17670580744743347,
-    "final_normal_loss": 0.2579967975616455,
-    "training_time_sec": 29.992807626724243,
+    "initial_loss": 0.9798166751861572,
+    "final_loss": 0.3923220932483673,
+    "final_eikonal_loss": 0.17020833492279053,
+    "final_normal_loss": 0.2527726888656616,
+    "training_time_sec": 39.1165885925293,
     "sample_counts": {
       "surface_points": 6000,
       "near_points": 6000,
@@ -25,23 +25,23 @@
   "extracted_surface": {
     "surface_ply": "nsdf_surface.ply",
     "surface_obj": "nsdf_surface.obj",
-    "vertices_count": 75327,
-    "faces_count": 148112,
+    "vertices_count": 94920,
+    "faces_count": 189902,
     "bounds": [
       [
-        -2.4602041244506836,
-        -2.246509075164795,
+        -2.4582087993621826,
+        -2.257017135620117,
         -1.2797588109970093
       ],
       [
-        2.14508056640625,
-        2.1402387619018555,
+        2.1456234455108643,
+        2.2185916900634766,
         2.569653034210205
       ]
     ],
     "extent": [
-      4.605284690856934,
-      4.38674783706665,
+      4.603832244873047,
+      4.475608825683594,
       3.8494118452072144
     ],
     "extraction_method": "Marching Cubes (level=0.0)"
@@ -49,37 +49,37 @@
   "refinement": {
     "refined_ply": "nsdf_surface_refined.ply",
     "refined_obj": "nsdf_surface_refined.obj",
-    "vertices_count": 75327,
-    "mean_curvature_mean": 6.211237607492822,
-    "mean_curvature_max": 6124.568249886877,
-    "gaussian_curvature_mean": -124.3177601940406,
+    "vertices_count": 94920,
+    "mean_curvature_mean": 3.5663295200789307,
+    "mean_curvature_max": 520.4050316571299,
+    "gaussian_curvature_mean": -28.98487886427996,
     "normal_filtering": "Curvature-Adaptive Bilateral Filter"
   },
   "point_to_plane_icp": {
     "registered_ply": "registered_reconstruction.ply",
     "method": "point_to_plane",
-    "fitness": 0.6332921794310141,
-    "inlier_rmse_mm": 0.19583156813238733,
-    "correspondences": 47704,
+    "fitness": 0.5940581542351454,
+    "inlier_rmse_mm": 0.19705328315910126,
+    "correspondences": 56388,
     "iterations": 50,
     "transformation": [
       [
-        0.8037257316929388,
-        0.5945510513488055,
-        0.02310834383259722,
-        -0.0013268974107585071
+        0.7241698204170604,
+        0.6877257589495279,
+        -0.05110138622797522,
+        0.068940455386086
       ],
       [
-        -0.13512033141590607,
-        0.14455994166430428,
-        0.9802269733608007,
-        -0.27370631739593343
+        -0.27813907299646673,
+        0.3590764810270993,
+        0.8908999589436886,
+        -0.24191501803647297
       ],
       [
-        0.5794544367357213,
-        -0.7909560484666944,
-        0.19652247998955635,
-        -0.03664311046449088
+        0.6310441563549974,
+        -0.6309495710835323,
+        0.4513157558513977,
+        -0.13451489315443296
       ],
       [
         0.0,
@@ -91,18 +91,18 @@
   },
   "final_crown": {
     "crown_obj": "reconstruction_surface.obj",
-    "triangles_count": 30000,
-    "vertices_count": 14476,
+    "triangles_count": 29999,
+    "vertices_count": 13629,
     "bounds": [
       [
-        -1.0067874193191528,
-        -0.8263201713562012,
-        -1.0548174381256104
+        -0.9710148572921753,
+        -0.9882617853581905,
+        -1.1830512285232544
       ],
       [
-        0.9199796915054321,
-        0.6784013509750366,
-        0.9882618188858032
+        1.01195228099823,
+        0.8801805377006531,
+        1.044203281402588
       ]
     ],
     "method": "Screened Poisson Surface Reconstruction"

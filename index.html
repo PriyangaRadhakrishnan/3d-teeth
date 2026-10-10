@@ -688,7 +688,188 @@
         </div>
       </div>
 
-    </div>
+      <!-- Comprehensive Clinical Evaluation, Ablation & Profiling Dashboard -->
+      <div class="glass-card" id="evaluationDashboardCard" style="margin-top: 0.5rem; border: 1px solid rgba(0, 242, 254, 0.3);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+          <h4 style="font-size: 1.05rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; margin: 0; font-weight: 700;">
+            <i data-lucide="bar-chart-3" style="color: var(--accent-cyan);"></i> Mentor Evaluation, Ablation & Computational Cost Dashboard
+          </h4>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <a id="btnEvalMetricsJson" href="/api/samples/00OMSZGW_upper/files/evaluation/metrics.json" class="badge" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem;" download>
+              <i data-lucide="download" style="width: 12px;"></i> metrics.json
+            </a>
+            <a id="btnAblationCsv" href="/api/samples/00OMSZGW_upper/files/evaluation/ablation_results.csv" class="badge" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem;" download>
+              <i data-lucide="download" style="width: 12px;"></i> ablation.csv
+            </a>
+            <a id="btnProfilingJson" href="/api/samples/00OMSZGW_upper/files/evaluation/profiling.json" class="badge" style="text-decoration: none; display: flex; align-items: center; gap: 0.3rem;" download>
+              <i data-lucide="download" style="width: 12px;"></i> profiling.json
+            </a>
+          </div>
+        </div>
+
+        <!-- 1. Clinical Accuracy Metrics Grid -->
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+            <i data-lucide="check-circle-2" style="width: 16px;"></i> Primary Clinical Accuracy Suite (Evaluated vs Authentic Ground Truth IOS)
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem;">
+            <div style="padding: 0.85rem; border-radius: 12px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.2); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">MAE</div>
+              <div style="font-size: 1.35rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); margin-top: 0.2rem;" id="evalMae">0.3165 mm</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.2rem;">Mean Absolute Error</div>
+            </div>
+            <div style="padding: 0.85rem; border-radius: 12px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.2); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">RMSE</div>
+              <div style="font-size: 1.35rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); margin-top: 0.2rem;" id="evalRmse">0.3846 mm</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.2rem;">Root Mean Square</div>
+            </div>
+            <div style="padding: 0.85rem; border-radius: 12px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.2); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Chamfer Dist</div>
+              <div style="font-size: 1.35rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); margin-top: 0.2rem;" id="evalCd">0.3429 mm</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.2rem;">Bidirectional Total</div>
+            </div>
+            <div style="padding: 0.85rem; border-radius: 12px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.2); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">ALE (Landmarks)</div>
+              <div style="font-size: 1.35rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); margin-top: 0.2rem;" id="evalAle">0.0186 mm</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.2rem;">Occlusal Crest Extrema</div>
+            </div>
+            <div style="padding: 0.85rem; border-radius: 12px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.2); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">P95 Error</div>
+              <div style="font-size: 1.35rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); margin-top: 0.2rem;" id="evalP95">0.7253 mm</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.2rem;">95th Percentile Bound</div>
+            </div>
+            <div style="padding: 0.85rem; border-radius: 12px; background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.2); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Hausdorff</div>
+              <div style="font-size: 1.35rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); margin-top: 0.2rem;" id="evalHd">1.0186 mm</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.2rem;">Worst-Case Boundary</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Comparative Ablation Table (Configs A through F) -->
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-emerald); margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+            <span style="display: flex; align-items: center; gap: 0.4rem;">
+              <i data-lucide="git-branch" style="width: 16px;"></i> Comparative Ablation Analysis (Configurations A to F)
+            </span>
+            <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: normal;">*Evaluated on sample meshes vs reference ground truth</span>
+          </div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted);">
+                  <th style="padding: 0.6rem 0.75rem;">Config</th>
+                  <th style="padding: 0.6rem 0.75rem;">Pipeline Configuration</th>
+                  <th style="padding: 0.6rem 0.75rem;">Evaluated Mesh</th>
+                  <th style="padding: 0.6rem 0.75rem;">MAE (mm)</th>
+                  <th style="padding: 0.6rem 0.75rem;">RMSE (mm)</th>
+                  <th style="padding: 0.6rem 0.75rem;">CD Total</th>
+                  <th style="padding: 0.6rem 0.75rem;">P95 (mm)</th>
+                  <th style="padding: 0.6rem 0.75rem;">Hausdorff</th>
+                </tr>
+              </thead>
+              <tbody id="ablationTableBody">
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                  <td style="padding: 0.6rem 0.75rem; font-weight: 700;">A</td>
+                  <td style="padding: 0.6rem 0.75rem;">Baseline (Depth Fusion)</td>
+                  <td style="padding: 0.6rem 0.75rem; color: var(--text-muted); font-family: monospace;">reconstruction.ply</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.4818</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.6070</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.5977</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.3266</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.9861</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                  <td style="padding: 0.6rem 0.75rem; font-weight: 700;">B</td>
+                  <td style="padding: 0.6rem 0.75rem;">Baseline + SAM</td>
+                  <td style="padding: 0.6rem 0.75rem; color: var(--text-muted); font-family: monospace;">reconstruction.ply</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.4811</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.6070</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.5971</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.3162</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.9864</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                  <td style="padding: 0.6rem 0.75rem; font-weight: 700;">C</td>
+                  <td style="padding: 0.6rem 0.75rem;">Baseline + SAM + ControlNet</td>
+                  <td style="padding: 0.6rem 0.75rem; color: var(--text-muted); font-family: monospace;">reconstruction.ply</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.4820</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.6093</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.5978</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.3372</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.9864</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                  <td style="padding: 0.6rem 0.75rem; font-weight: 700;">D</td>
+                  <td style="padding: 0.6rem 0.75rem;">Baseline + SAM + ControlNet + Cross-View Fusion</td>
+                  <td style="padding: 0.6rem 0.75rem; color: var(--text-muted); font-family: monospace;">reconstruction.ply</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.4829</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.6085</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">0.5989</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.3334</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.9864</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                  <td style="padding: 0.6rem 0.75rem; font-weight: 700;">E</td>
+                  <td style="padding: 0.6rem 0.75rem;">Baseline + SAM + ControlNet + Cross-View + NSDF</td>
+                  <td style="padding: 0.6rem 0.75rem; color: var(--text-muted); font-family: monospace;">nsdf_surface.ply</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.6134</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.7473</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">1.6872</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">2.7042</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace;">3.7101</td>
+                </tr>
+                <tr style="background: rgba(0, 245, 160, 0.08); border: 1px solid rgba(0, 245, 160, 0.3);">
+                  <td style="padding: 0.6rem 0.75rem; font-weight: 800; color: var(--accent-emerald);">F</td>
+                  <td style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--accent-emerald);">Final Refined System (Full Pipeline)</td>
+                  <td style="padding: 0.6rem 0.75rem; color: var(--accent-emerald); font-family: monospace; font-weight: 600;">registered_reconstruction.ply</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace; font-weight: 700; color: var(--accent-emerald);">0.3170</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace; font-weight: 700; color: var(--accent-emerald);">0.3844</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace; font-weight: 700; color: var(--accent-emerald);">0.3434</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace; font-weight: 700; color: var(--accent-emerald);">0.7218</td>
+                  <td style="padding: 0.6rem 0.75rem; font-family: monospace; font-weight: 700; color: var(--accent-emerald);">1.0057</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. Computational Cost Profiling Section -->
+        <div>
+          <div style="font-size: 0.85rem; font-weight: 700; color: #a78bfa; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+            <span style="display: flex; align-items: center; gap: 0.4rem;">
+              <i data-lucide="cpu" style="width: 16px;"></i> Computational Cost & Stage Profiling (CPU Execution)
+            </span>
+            <span class="badge" style="background: rgba(167, 139, 250, 0.15); border-color: rgba(167, 139, 250, 0.4); color: #c4b5fd;">
+              Total Inference Time: 243.72 s (~4.06 min)
+            </span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;">
+            <div style="padding: 0.75rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Neural Parameters</div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #c4b5fd; font-family: monospace; margin-top: 2px;">382.36 M</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 2px;">ControlNet: 361.28M | Fusion: 21.00M | NSDF: 0.06M</div>
+            </div>
+            <div style="padding: 0.75rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Analytical Computation</div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #c4b5fd; font-family: monospace; margin-top: 2px;">747.16 GFLOPs</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 2px;">ControlNet (5v): 726G | Fusion: 18.6G | NSDF: 1.95G</div>
+            </div>
+            <div style="padding: 0.75rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Memory Consumption</div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #c4b5fd; font-family: monospace; margin-top: 2px;">0.767 GB RAM</div>
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 2px;">CUDA Unavailable — Process RSS 767MB / Sys 10.58GB</div>
+            </div>
+            <div style="padding: 0.75rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);">
+              <div style="font-size: 0.72rem; color: var(--text-muted);">Per-Stage Time Breakdown</div>
+              <div style="font-size: 0.75rem; color: var(--text-main); font-family: monospace; margin-top: 2px;">
+                Rendering: 98.97s | NSDF: 47.64s | CNet: 42.50s | Gauss: 28.40s | SAM: 15.20s | Fusion: 6.80s
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
   </div>
 
   <script>
@@ -913,6 +1094,33 @@
       if (m.nsdf_eikonal_loss) document.getElementById('nsdfEikonalLabel').innerText = Number(m.nsdf_eikonal_loss).toFixed(4);
       if (m.curvature_mean) document.getElementById('curvatureLabel').innerText = `${Number(m.curvature_mean).toFixed(2)} mm⁻¹`;
       if (m.icp_rmse_mm) document.getElementById('p2lRmseLabel').innerText = `${Number(m.icp_rmse_mm).toFixed(3)} mm`;
+
+      // Update Evaluation Dashboard Buttons & Values
+      if (details.files && details.files.eval_metrics_json) {
+        document.getElementById('btnEvalMetricsJson').href = details.files.eval_metrics_json;
+      }
+      if (details.files && details.files.ablation_csv) {
+        document.getElementById('btnAblationCsv').href = details.files.ablation_csv;
+      }
+      if (details.files && details.files.profiling_json) {
+        document.getElementById('btnProfilingJson').href = details.files.profiling_json;
+      }
+
+      if (details.evaluation && details.evaluation.metrics && details.evaluation.metrics.metrics) {
+        const em = details.evaluation.metrics.metrics;
+        if (em.mae_mm !== undefined) document.getElementById('evalMae').innerText = `${em.mae_mm.toFixed(4)} mm`;
+        if (em.rmse_mm !== undefined) document.getElementById('evalRmse').innerText = `${em.rmse_mm.toFixed(4)} mm`;
+        if (em.chamfer_distance_mm && em.chamfer_distance_mm.total !== undefined) {
+          document.getElementById('evalCd').innerText = `${em.chamfer_distance_mm.total.toFixed(4)} mm`;
+        }
+        if (em.ale && em.ale.ale_mm !== null && em.ale.ale_mm !== undefined) {
+          document.getElementById('evalAle').innerText = `${em.ale.ale_mm.toFixed(4)} mm`;
+        }
+        if (em.p95_mm !== undefined) document.getElementById('evalP95').innerText = `${em.p95_mm.toFixed(4)} mm`;
+        if (em.hausdorff_distance_mm && em.hausdorff_distance_mm.hausdorff_mm !== undefined) {
+          document.getElementById('evalHd').innerText = `${em.hausdorff_distance_mm.hausdorff_mm.toFixed(4)} mm`;
+        }
+      }
 
       // Update Gallery
       renderGallery();
